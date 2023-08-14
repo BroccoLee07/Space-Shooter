@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,8 +19,11 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private float _maxEnemySpawnTime = 8f;
 
     private Enemy enemy;
+
     public void Start() { 
         enemy = _enemyPrefab.GetComponent<Enemy>();
+
+        SubscribeToEvents();
 
         StartCoroutine(SpawnEnemyCoroutine());
     }
@@ -41,11 +45,31 @@ public class SpawnManager : MonoBehaviour {
 
     private Vector3 GetRandomEnemySpawnPosition(Enemy enemy) {
         // float randomX = Random.Range(enemy.GetMovementBoundary().minX + _enemySpawnHorizontalOffset, enemy.GetMovementBoundary().maxX - _enemySpawnHorizontalOffset);
-        float randomX = Random.Range(enemy.GetMovementBoundary().minX, enemy.GetMovementBoundary().maxX);
+        float randomX = UnityEngine.Random.Range(enemy.GetMovementBoundary().minX, enemy.GetMovementBoundary().maxX);
         return new Vector3(randomX, enemy.GetMovementBoundary().maxY, enemy.transform.position.z);
     }
 
     private float GetRandomEnemySpawnTime() {
-        return Random.Range(_minEnemySpawnTime, _maxEnemySpawnTime);
+        return UnityEngine.Random.Range(_minEnemySpawnTime, _maxEnemySpawnTime);
+    }
+
+    // TODO: Trigger when player HP is <= 0
+    public void OnPlayerDeathEventHandler() {
+        StopCoroutine(SpawnEnemyCoroutine());
+        Cleanup();
+    }
+
+    private void Cleanup() {
+        foreach (Transform enemyObj in _enemyContainer.transform) {
+            Destroy(enemyObj.gameObject);
+        }
+    }
+
+    private void SubscribeToEvents() {
+        try {
+            FindObjectOfType<Player>().OnPlayerDeath += OnPlayerDeathEventHandler;
+        } catch (Exception e) {
+            Debug.Log(e.Message);
+        }
     }
 }

@@ -22,6 +22,8 @@ public class Player : MonoBehaviour {
     // TODO: Replace bounds to be based on the actual device screen resolution
     [SerializeField] private Boundary _movementBoundary;
 
+    public event Action OnPlayerDeath;
+
     private float _nextLaserFireTime;
     private int _currentHP;
 
@@ -94,10 +96,11 @@ public class Player : MonoBehaviour {
             // TODO: Handle different HP decrease for different enemies
             _currentHP -= 1;
             Debug.Log($"Current player HP: {_currentHP}");
-            if (_currentHP <= 0) {
+            if (_currentHP <= 0) {  // Player lost all their HP
+                Debug.Log("Game over");
                 Destroy(this.gameObject);
 
-                EndGame();
+                OnPlayerDeath?.Invoke();
             }
         } catch (Exception e) { 
             // TODO: Display error message on screen
@@ -105,13 +108,12 @@ public class Player : MonoBehaviour {
         }
     }
 
-    private void EndGame() { 
-        // TODO: Move to a different script that controls overall game state
-        try { 
-
-        } catch (Exception e) { 
-            // TODO: Display error message on screen
-            Debug.Log(e.Message);
-        }
-    }
+    // private void EndGame() { 
+    //     // TODO: Move to a different script that controls overall game state
+    //     try {
+    //     } catch (Exception e) { 
+    //         // TODO: Display error message on screen
+    //         Debug.Log(e.Message);
+    //     }
+    // }
 }
