@@ -5,6 +5,7 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour {
 
     [SerializeField] private GameObject _enemyPrefab;
+    [SerializeField] private GameObject _enemyContainer;
 
     // [Tooltip("Horizontal spawn position offset from enemy's movement boundary")]
     // [Min(0)]
@@ -26,11 +27,16 @@ public class SpawnManager : MonoBehaviour {
     }
 
     private IEnumerator SpawnEnemyCoroutine() {
-        while (true) {            
-            Instantiate(_enemyPrefab, GetRandomEnemySpawnPosition(enemy), Quaternion.identity);
+        while (true) {
+            SpawnEnemy();
 
             yield return new WaitForSeconds(GetRandomEnemySpawnTime());
         }
+    }
+
+    private void SpawnEnemy() { 
+        GameObject enemyObj = Instantiate(_enemyPrefab, GetRandomEnemySpawnPosition(enemy), Quaternion.identity);
+        enemyObj.transform.SetParent(_enemyContainer.transform);
     }
 
     private Vector3 GetRandomEnemySpawnPosition(Enemy enemy) {
