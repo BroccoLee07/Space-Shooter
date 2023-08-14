@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -38,11 +39,16 @@ public class Player : MonoBehaviour {
         }
     }
 
-    public void FireLaser() { 
-        // update next laser time to track cooldown before spawning the laser  
-        _nextLaserFireTime = Time.time + _laserFireRate;
-        Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffest);
-        Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+    public void FireLaser() {
+        try { 
+            // update next laser time to track cooldown before spawning the laser  
+            _nextLaserFireTime = Time.time + _laserFireRate;
+            Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffest);
+            Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }        
     }
 
     public bool CanFireLaser() {
@@ -52,44 +58,60 @@ public class Player : MonoBehaviour {
     // Calculates movement of the player
     // Taking note of speed, direction, and movement boundaries
     private void CalculateMovement() { 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+        try { 
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+            Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-        // Move player object based on real time (time between frames), 
-        // speed multiplier, and player input for direction
-        transform.Translate(direction * _speed * Time.deltaTime);
+            // Move player object based on real time (time between frames), 
+            // speed multiplier, and player input for direction
+            transform.Translate(direction * _speed * Time.deltaTime);
 
-        // Player vertical movement restriction
-        // If player object is moving vertically beyond player bounds, set player position to the limit as a restriction
-        transform.position = new Vector3(
-            transform.position.x, 
-            Mathf.Clamp(transform.position.y, _movementBoundary.minY, _movementBoundary.maxY),
-            transform.position.z
-        );
+            // Player vertical movement restriction
+            // If player object is moving vertically beyond player bounds, set player position to the limit as a restriction
+            transform.position = new Vector3(
+                transform.position.x, 
+                Mathf.Clamp(transform.position.y, _movementBoundary.minY, _movementBoundary.maxY),
+                transform.position.z
+            );
 
-        // Player horizontal movement restriction
-        // If player object is moving horizontally beyond player bounds, set player position to the opposite limit 
-        // as if teleporting or to have that effect where the ends of the screen are connected
-        if (transform.position.x > _movementBoundary.maxX) {
-            transform.position = new Vector3(_movementBoundary.minX, transform.position.y, transform.position.z);
-        } else if (transform.position.x <= _movementBoundary.minX) {
-            transform.position = new Vector3(_movementBoundary.maxX, transform.position.y, transform.position.z);
+            // Player horizontal movement restriction
+            // If player object is moving horizontally beyond player bounds, set player position to the opposite limit 
+            // as if teleporting or to have that effect where the ends of the screen are connected
+            if (transform.position.x > _movementBoundary.maxX) {
+                transform.position = new Vector3(_movementBoundary.minX, transform.position.y, transform.position.z);
+            } else if (transform.position.x <= _movementBoundary.minX) {
+                transform.position = new Vector3(_movementBoundary.maxX, transform.position.y, transform.position.z);
+            }
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
         }
     }
 
     public void TakeDamage() {
-        // TODO: Handle different HP decrease for different enemies
-        _currentHP -= 1;
+        try { 
+            // TODO: Handle different HP decrease for different enemies
+            _currentHP -= 1;
 
-        if (_currentHP <= 0) {
-            Destroy(this.gameObject);
-            
-            EndGame();
-        }        
+            if (_currentHP <= 0) {
+                Destroy(this.gameObject);
+
+                EndGame();
+            }
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }
     }
 
     private void EndGame() { 
         // TODO: Move to a different script that controls overall game state
+        try { 
+
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }
     }
 }

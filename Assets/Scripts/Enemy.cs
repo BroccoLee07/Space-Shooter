@@ -43,14 +43,25 @@ public class Enemy : MonoBehaviour {
     }
 
     private void Travel() {
-        // Move enemy downward with speed of 4
-        transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        try {
+            // Move enemy downward with speed of 4
+            transform.Translate(Vector3.down * _speed * Time.deltaTime);
+        } catch (Exception e) {
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }
+        
     }
 
     private void Cleanup() {
-        if (transform.position.y < _movementBoundary.minY) {
-            float randomX = UnityEngine.Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
-            transform.position = new Vector3(randomX, _movementBoundary.maxY, transform.position.z);
-        }
+        try {
+            if (transform.position.y < _movementBoundary.minY) {
+                float randomX = UnityEngine.Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
+                transform.position = new Vector3(randomX, _movementBoundary.maxY, transform.position.z);
+            }
+        } catch (Exception e) {
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }        
     }
 }

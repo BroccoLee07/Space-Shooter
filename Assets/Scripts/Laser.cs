@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,14 +21,24 @@ public class Laser : MonoBehaviour {
     }
 
     private void Travel() {
-        // Move laser upward
-        transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        try { 
+            // Move laser upward
+            transform.Translate(Vector3.up * _speed * Time.deltaTime);
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
+        }
     }
 
     private void Cleanup() {
-        // Delete after a going out of the screen
-        if (transform.position.y >= _laserTravelTopLimit) {
-            Destroy(this.gameObject);
+        try { 
+            // Delete after a going out of the screen
+            if (transform.position.y >= _laserTravelTopLimit) {
+                Destroy(this.gameObject);
+            }
+        } catch (Exception e) { 
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
         }
     }
 
@@ -37,8 +48,8 @@ public class Laser : MonoBehaviour {
     }
 
     private Vector3 CalculateLaserSpawnPosition(Vector3 playerPosition, float laserOffset) {
-        // TODO: have checking for types of laser
-        Vector3 _laserSpawnPosition = playerPosition + new Vector3(0, laserOffset, 0);
-        return _laserSpawnPosition;
+            // TODO: have checking for types of laser
+            Vector3 _laserSpawnPosition = playerPosition + new Vector3(0, laserOffset, 0);
+            return _laserSpawnPosition;
     }
 }
