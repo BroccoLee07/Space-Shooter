@@ -34,11 +34,11 @@ public class Player : MonoBehaviour {
 
         // Player vertical movement restriction
         // If player object is moving vertically beyond player bounds, set player position to the limit as a restriction
-        if (transform.position.y > playerPositiveBounds.y) {
-            transform.position = new Vector3(transform.position.x, playerPositiveBounds.y, transform.position.z);
-        } else if (transform.position.y <= playerNegativeBounds.y) {
-            transform.position = new Vector3(transform.position.x, playerNegativeBounds.y, transform.position.z);
-        }
+        transform.position = new Vector3(
+            transform.position.x, 
+            Mathf.Clamp(transform.position.y, playerNegativeBounds.y, playerPositiveBounds.y),
+            transform.position.z
+        );
 
         // Player horizontal movement restriction
         // If player object is moving horizontally beyond player bounds, set player position to the opposite limit 
