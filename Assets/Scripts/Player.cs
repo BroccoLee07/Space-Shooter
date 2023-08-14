@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour {
 
+    [Header("Player Stats")]
+    [SerializeField] private int _maxHP = 3;
     [SerializeField] private float _speed = 3.5f;
 
     [Header("Player Laser")]
@@ -20,10 +22,11 @@ public class Player : MonoBehaviour {
     [SerializeField] private Boundary _movementBoundary;
 
     private float _nextLaserFireTime;
-
+    private int _currentHP;
 
     public void Start() {
         transform.position = Vector3.zero;
+        _currentHP = _maxHP;
     }
 
     public void Update() {
@@ -73,5 +76,20 @@ public class Player : MonoBehaviour {
         } else if (transform.position.x <= _movementBoundary.minX) {
             transform.position = new Vector3(_movementBoundary.maxX, transform.position.y, transform.position.z);
         }
+    }
+
+    public void TakeDamage() {
+        // TODO: Handle different HP decrease for different enemies
+        _currentHP -= 1;
+
+        if (_currentHP <= 0) {
+            Destroy(this.gameObject);
+            
+            EndGame();
+        }        
+    }
+
+    private void EndGame() { 
+        // TODO: Move to a different script that controls overall game state
     }
 }

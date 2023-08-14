@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,16 +18,28 @@ public class Enemy : MonoBehaviour {
         ResolveCollision(other);        
     }
 
-    private void ResolveCollision(Collider other) { 
-        // If enemy hit the player, damage player and destroy enemy
-        // If enemy hit laser, destroy laser and destroy enemy
-        if (other.tag == "Player") {
-            // TODO: Reduce player HP by 1
-            Destroy(this.gameObject);
-        } else if (other.tag == "Laser") {
-            Destroy(other.gameObject);
-            Destroy(this.gameObject);
+    private void ResolveCollision(Collider other) {
+        try {
+            // If enemy hit the player, damage player and destroy enemy
+            // If enemy hit laser, destroy laser and destroy enemy
+            if (other.tag == "Player") {
+                // TODO: Reduce player HP by 1
+                Player player = other.GetComponent<Player>();
+                if (player != null) { 
+                    player.TakeDamage();
+                } else {                    
+                    throw new Exception("Missing Player script component");
+                }
+                Destroy(this.gameObject);
+            } else if (other.tag == "Laser") {
+                Destroy(other.gameObject);
+                Destroy(this.gameObject);
+            }
+        } catch (Exception e) {
+            // TODO: Display error message on screen
+            Debug.Log(e.Message);
         }
+        
     }
 
     private void Travel() {
@@ -36,7 +49,7 @@ public class Enemy : MonoBehaviour {
 
     private void Cleanup() {
         if (transform.position.y < _movementBoundary.minY) {
-            float randomX = Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
+            float randomX = UnityEngine.Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
             transform.position = new Vector3(randomX, _movementBoundary.maxY, transform.position.z);
         }
     }
