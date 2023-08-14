@@ -5,7 +5,7 @@ using UnityEngine;
 
 // TODO: Rename to bullet
 public class Laser : MonoBehaviour {
-    
+
     [SerializeField] private float _speed;
 
     [Header("Laser Travel Bounds")]
@@ -13,10 +13,8 @@ public class Laser : MonoBehaviour {
     [Tooltip("Travel limit for the top of the screen")]
     [SerializeField] private float _laserTravelTopLimit = 9f;
     
-    public void Update() { 
-        // Add movement to laser on spawn
-        Travel();
-        // Destroy laser object if it goes over the limit
+    public void Update() {
+        Travel();        
         Cleanup();
     }
 

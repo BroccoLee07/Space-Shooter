@@ -4,15 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
-    
+
     [SerializeField] private float _speed = 4f;
     [SerializeField] private Boundary _movementBoundary;
 
     public void Update() {
-        // Move enemy down 4 per second        
         Travel();
-
-        // If it goes past the bottom of the screen, respawn at the top with a random x position
         Cleanup();
     }
 
@@ -46,7 +43,7 @@ public class Enemy : MonoBehaviour {
 
     private void Travel() {
         try {
-            // Move enemy downward with speed of 4
+            // Move enemy downward with assigned speed
             transform.Translate(Vector3.down * _speed * Time.deltaTime);
         } catch (Exception e) {
             // TODO: Display error message on screen
@@ -55,7 +52,8 @@ public class Enemy : MonoBehaviour {
         
     }
 
-    private void Cleanup() {
+    private void Cleanup() {        
+        // If enemy goes past the bottom of the screen, respawn at the top with a random x position
         try {
             if (transform.position.y < _movementBoundary.minY) {
                 float randomX = UnityEngine.Random.Range(_movementBoundary.minX, _movementBoundary.maxX);

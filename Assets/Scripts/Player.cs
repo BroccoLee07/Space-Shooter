@@ -107,13 +107,4 @@ public class Player : MonoBehaviour {
             Debug.Log(e.Message);
         }
     }
-
-    // private void EndGame() { 
-    //     // TODO: Move to a different script that controls overall game state
-    //     try {
-    //     } catch (Exception e) { 
-    //         // TODO: Display error message on screen
-    //         Debug.Log(e.Message);
-    //     }
-    // }
 }

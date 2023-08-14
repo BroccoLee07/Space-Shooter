@@ -8,10 +8,6 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _enemyContainer;
 
-    // [Tooltip("Horizontal spawn position offset from enemy's movement boundary")]
-    // [Min(0)]
-    // [SerializeField] private float _enemySpawnHorizontalOffset = 2;
-
     [Header("Enemy spawn cooldown")]
     [Tooltip("Minimum spawn time for enemy (seconds)")]
     [SerializeField] private float _minEnemySpawnTime = 5f;
@@ -46,7 +42,6 @@ public class SpawnManager : MonoBehaviour {
     }
 
     private Vector3 GetRandomEnemySpawnPosition(Enemy enemy) {
-        // float randomX = Random.Range(enemy.GetMovementBoundary().minX + _enemySpawnHorizontalOffset, enemy.GetMovementBoundary().maxX - _enemySpawnHorizontalOffset);
         float randomX = UnityEngine.Random.Range(enemy.GetMovementBoundary().minX, enemy.GetMovementBoundary().maxX);
         return new Vector3(randomX, enemy.GetMovementBoundary().maxY, enemy.transform.position.z);
     }
@@ -55,7 +50,6 @@ public class SpawnManager : MonoBehaviour {
         return UnityEngine.Random.Range(_minEnemySpawnTime, _maxEnemySpawnTime);
     }
 
-    // TODO: Trigger when player HP is <= 0
     public void OnPlayerDeathEventHandler() {
         isSpawningEnemies = false;
         StopCoroutine(SpawnEnemyCoroutine());
