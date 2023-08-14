@@ -19,9 +19,11 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private float _maxEnemySpawnTime = 8f;
 
     private Enemy enemy;
+    private bool isSpawningEnemies;
 
     public void Start() { 
         enemy = _enemyPrefab.GetComponent<Enemy>();
+        isSpawningEnemies = true;
 
         SubscribeToEvents();
 
@@ -31,7 +33,7 @@ public class SpawnManager : MonoBehaviour {
     }
 
     private IEnumerator SpawnEnemyCoroutine() {
-        while (true) {
+        while (isSpawningEnemies) {
             SpawnEnemy();
 
             yield return new WaitForSeconds(GetRandomEnemySpawnTime());
@@ -55,6 +57,7 @@ public class SpawnManager : MonoBehaviour {
 
     // TODO: Trigger when player HP is <= 0
     public void OnPlayerDeathEventHandler() {
+        isSpawningEnemies = false;
         StopCoroutine(SpawnEnemyCoroutine());
         Cleanup();
     }
