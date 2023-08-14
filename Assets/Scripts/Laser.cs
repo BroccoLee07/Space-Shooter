@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// TODO: Rename to bullet
 public class Laser : MonoBehaviour {
     // speed variable
     [SerializeField] private float _speed;

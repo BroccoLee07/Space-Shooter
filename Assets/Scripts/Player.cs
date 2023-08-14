@@ -12,13 +12,18 @@ public class Player : MonoBehaviour {
     // Setting laser offest here instead on in Laser script 
     // because the offset might be different for different enemies and the player itself
     [SerializeField] private float _laserOffest;
+    [Tooltip("Cooldown for firing laser (seconds)")]
+    [SerializeField] private float _laserFireRate = 0.5f;
 
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
-    [Tooltip("Movement limit for the top and right side of the screen")]
-    [SerializeField] private Vector2 _playerMovementMaxBounds = new Vector2(11f, 0f);
-    [Tooltip("Movement limit for the bottom and left side of the screen")]
-    [SerializeField] private Vector2 _playerMovementMinBounds = new Vector2(-11f, -3.8f);
+    // [Tooltip("Movement limit for the top and right side of the screen")]
+    // [SerializeField] private Vector2 _playerMovementMaxBounds = new Vector2(11f, 0f);
+    // [Tooltip("Movement limit for the bottom and left side of the screen")]
+    // [SerializeField] private Vector2 _playerMovementMinBounds = new Vector2(-11f, -3.8f);
+    [SerializeField] private Boundary _movementBoundary;
+
+    private float _nextLaserFireTime;
 
 
     public void Start() {
@@ -28,16 +33,21 @@ public class Player : MonoBehaviour {
     public void Update() {
         CalculateMovement();
 
-        FireLaser();
+        // spawn laser on space key press and after cooldown
+        if (Input.GetKeyDown(KeyCode.Space) && CanFireLaser()) {
+            FireLaser();
+        }
     }
 
     public void FireLaser() { 
-        // spawn laser on space key press
-        // delete after a distance outside the device's screen resolution
-        if (Input.GetKeyDown(KeyCode.Space)) {
-            Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffest);
-            Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
-        }
+        // update next laser time to track cooldown before spawning the laser  
+        _nextLaserFireTime = Time.time + _laserFireRate;
+        Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffest);
+        Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+    }
+
+    public bool CanFireLaser() {
+        return Time.time > _nextLaserFireTime;
     }
 
     // Calculates movement of the player
@@ -55,17 +65,17 @@ public class Player : MonoBehaviour {
         // If player object is moving vertically beyond player bounds, set player position to the limit as a restriction
         transform.position = new Vector3(
             transform.position.x, 
-            Mathf.Clamp(transform.position.y, _playerMovementMinBounds.y, _playerMovementMaxBounds.y),
+            Mathf.Clamp(transform.position.y, _movementBoundary.minY, _movementBoundary.maxY),
             transform.position.z
         );
 
         // Player horizontal movement restriction
         // If player object is moving horizontally beyond player bounds, set player position to the opposite limit 
         // as if teleporting or to have that effect where the ends of the screen are connected
-        if (transform.position.x > _playerMovementMaxBounds.x) {
-            transform.position = new Vector3(_playerMovementMinBounds.x, transform.position.y, transform.position.z);
-        } else if (transform.position.x <= _playerMovementMinBounds.x) {
-            transform.position = new Vector3(_playerMovementMaxBounds.x, transform.position.y, transform.position.z);
+        if (transform.position.x > _movementBoundary.maxX) {
+            transform.position = new Vector3(_movementBoundary.minX, transform.position.y, transform.position.z);
+        } else if (transform.position.x <= _movementBoundary.minX) {
+            transform.position = new Vector3(_movementBoundary.maxX, transform.position.y, transform.position.z);
         }
     }
 }
