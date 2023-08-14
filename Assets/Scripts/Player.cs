@@ -17,10 +17,6 @@ public class Player : MonoBehaviour {
 
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
-    // [Tooltip("Movement limit for the top and right side of the screen")]
-    // [SerializeField] private Vector2 _playerMovementMaxBounds = new Vector2(11f, 0f);
-    // [Tooltip("Movement limit for the bottom and left side of the screen")]
-    // [SerializeField] private Vector2 _playerMovementMinBounds = new Vector2(-11f, -3.8f);
     [SerializeField] private Boundary _movementBoundary;
 
     private float _nextLaserFireTime;
