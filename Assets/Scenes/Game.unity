@@ -331,8 +331,11 @@ MonoBehaviour:
   _laserPrefab: {fileID: 4652833205950370907, guid: 6377fc065141ebc4b88a18abe675eb6a, type: 3}
   _laserOffest: 0.8
   _laserFireRate: 0.15
-  _playerMovementMaxBounds: {x: 11, y: 0}
-  _playerMovementMinBounds: {x: -11, y: -3.8}
+  _movementBoundary:
+    minX: -11
+    maxX: 11
+    minY: -3.8
+    maxY: 0
 --- !u!1 &1262170284
 GameObject:
   m_ObjectHideFlags: 0
