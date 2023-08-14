@@ -13,6 +13,22 @@ public class Enemy : MonoBehaviour {
         Cleanup();
     }
 
+    public void OnTriggerEnter(Collider other) {
+        ResolveCollision(other);        
+    }
+
+    private void ResolveCollision(Collider other) { 
+        // If enemy hit the player, damage player and destroy enemy
+        // If enemy hit laser, destroy laser and destroy enemy
+        if (other.tag == "Player") {
+            // TODO: Reduce player HP by 1
+            Destroy(this.gameObject);
+        } else if (other.tag == "Laser") {
+            Destroy(other.gameObject);
+            Destroy(this.gameObject);
+        }
+    }
+
     private void Travel() {
         // Move enemy downward with speed of 4
         transform.Translate(Vector3.down * _speed * Time.deltaTime);
@@ -20,7 +36,8 @@ public class Enemy : MonoBehaviour {
 
     private void Cleanup() {
         if (transform.position.y < _movementBoundary.minY) {
-            transform.position = new Vector3(Random.Range(_movementBoundary.minX, _movementBoundary.maxX),_movementBoundary.maxY, transform.position.z);
+            float randomX = Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
+            transform.position = new Vector3(randomX, _movementBoundary.maxY, transform.position.z);
         }
     }
 }
