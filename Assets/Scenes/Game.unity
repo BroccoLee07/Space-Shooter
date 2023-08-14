@@ -328,8 +328,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 3.75
-  playerPositiveBounds: {x: 11, y: 0}
-  playerNegativeBounds: {x: -11, y: -3.8}
+  _laserPrefab: {fileID: 0}
+  _playerPositiveBounds: {x: 11, y: 0}
+  _playerNegativeBounds: {x: -11, y: 3.8}
 --- !u!1 &1573134834
 GameObject:
   m_ObjectHideFlags: 0
