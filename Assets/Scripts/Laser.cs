@@ -26,7 +26,18 @@ public class Laser : MonoBehaviour {
     private void Cleanup() {
         // Delete after a going out of the screen
         if (transform.position.y >= _laserTravelTopLimit) {
-            Destroy(gameObject);
+            Destroy(this.gameObject);
         }
+    }
+
+    public Vector3 GetLaserSpawnPosition(Vector3 playerPosition, float laserOffset) {
+        // Calculate spawn position and return value
+        return CalculateLaserSpawnPosition(playerPosition, laserOffset);
+    }
+
+    private Vector3 CalculateLaserSpawnPosition(Vector3 playerPosition, float laserOffset) {
+        // TODO: have checking for types of laser
+        Vector3 _laserSpawnPosition = playerPosition + new Vector3(0, laserOffset, 0);
+        return _laserSpawnPosition;
     }
 }

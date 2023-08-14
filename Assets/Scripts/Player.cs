@@ -8,6 +8,10 @@ public class Player : MonoBehaviour {
 
     [Header("Player Laser")]
     [SerializeField] private GameObject _laserPrefab;
+    [Tooltip("Laser spawn distance from player")]
+    // Setting laser offest here instead on in Laser script 
+    // because the offset might be different for different enemies and the player itself
+    [SerializeField] private float _laserOffest;
 
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
@@ -31,7 +35,8 @@ public class Player : MonoBehaviour {
         // spawn laser on space key press
         // delete after a distance outside the device's screen resolution
         if (Input.GetKeyDown(KeyCode.Space)) {
-            Instantiate(_laserPrefab, transform.position, Quaternion.identity);
+            Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffest);
+            Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
         }
     }
 

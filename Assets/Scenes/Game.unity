@@ -329,6 +329,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 3.75
   _laserPrefab: {fileID: 4652833205950370907, guid: 6377fc065141ebc4b88a18abe675eb6a, type: 3}
+  _laserOffest: 0.8
   _playerMovementMaxBounds: {x: 11, y: 0}
   _playerMovementMinBounds: {x: -11, y: -3.8}
 --- !u!1 &1573134834
