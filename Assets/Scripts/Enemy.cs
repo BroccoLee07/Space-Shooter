@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour {
+    
     [SerializeField] private float _speed = 4f;
     [SerializeField] private Boundary _movementBoundary;
+
     public void Update() {
         // Move enemy down 4 per second        
         Travel();
@@ -63,5 +65,9 @@ public class Enemy : MonoBehaviour {
             // TODO: Display error message on screen
             Debug.Log(e.Message);
         }        
+    }
+
+    public Boundary GetMovementBoundary() {
+        return _movementBoundary;
     }
 }

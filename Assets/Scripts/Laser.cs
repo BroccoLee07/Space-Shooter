@@ -5,7 +5,7 @@ using UnityEngine;
 
 // TODO: Rename to bullet
 public class Laser : MonoBehaviour {
-    // speed variable
+    
     [SerializeField] private float _speed;
 
     [Header("Laser Travel Bounds")]

@@ -93,7 +93,7 @@ public class Player : MonoBehaviour {
         try { 
             // TODO: Handle different HP decrease for different enemies
             _currentHP -= 1;
-
+            Debug.Log($"Current player HP: {_currentHP}");
             if (_currentHP <= 0) {
                 Destroy(this.gameObject);
 

@@ -113,8 +113,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _speed: 4
   _movementBoundary:
-    minX: -11
-    maxX: 11
+    minX: -9
+    maxX: 9
     minY: -5
     maxY: 9
 --- !u!54 &-5856739208969692636
