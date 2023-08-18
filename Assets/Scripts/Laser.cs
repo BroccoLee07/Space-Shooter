@@ -11,7 +11,7 @@ using UnityEngine;
 // TODO: Rename to bullet
 public class Laser : MonoBehaviour {
 
-    [SerializeField] private float _speed;
+    [SerializeField] private float _movementSpeed = 4f;
 
     [Header("Laser Travel Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
@@ -32,7 +32,7 @@ public class Laser : MonoBehaviour {
     private void Travel() {
         try { 
             // Move laser upward
-            transform.Translate(Vector3.up * _speed * Time.deltaTime);
+            transform.Translate(Vector3.up * _movementSpeed * Time.deltaTime);
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);

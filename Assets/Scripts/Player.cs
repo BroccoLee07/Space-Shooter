@@ -127,4 +127,12 @@ public class Player : MonoBehaviour, IPlayerEvents {
             Debug.Log(e.Message);
         }
     }
+
+    public void EnableTripleShotPowerup() {
+        _hasTripleShotPowerup = true;
+    }
+
+    public void DisableTripleShotPowerup() {
+        _hasTripleShotPowerup = false;
+    }
 }

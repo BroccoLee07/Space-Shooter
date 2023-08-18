@@ -8,37 +8,85 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _enemyContainer;
 
+    [Header("Powerups")]
+    [SerializeField] private GameObject _tripleShotPowerupPrefab;
+    [SerializeField] private GameObject _shieldPowerupPrefab;
+    [SerializeField] private GameObject _speedPowerupPrefab;
+    [SerializeField] private GameObject _powerupContainer;
+
     [Header("Enemy spawn cooldown")]
     [Tooltip("Minimum spawn time for enemy (seconds)")]
     [SerializeField] private float _minEnemySpawnTime = 5f;
     [Tooltip("Maximum spawn time for enemy (seconds)")]
     [SerializeField] private float _maxEnemySpawnTime = 8f;
 
-    private Enemy enemy;
-    private bool isSpawningEnemies;
+    [Header("Powerup spawn cooldown")]
+    [Tooltip("Minimum spawn time for powerup (seconds)")]
+    [SerializeField] private float _minPowerupSpawnTime = 10f;
+    [Tooltip("Maximum spawn time for powerup (seconds)")]
+    [SerializeField] private float _maxPowerupSpawnTime = 15f;
+
+    private Enemy _enemy;
+    private Powerup _tripleShotPowerup;
+    private Powerup _shieldPowerup;
+    private Powerup _speedPowerup;
+
+    private bool _isSpawningEnemies;
+    private bool _isSpawningPowerups;
 
     public void Start() { 
-        enemy = _enemyPrefab.GetComponent<Enemy>();
-        isSpawningEnemies = true;
+        _enemy = _enemyPrefab.GetComponent<Enemy>();
+        _tripleShotPowerup = _tripleShotPowerupPrefab.GetComponent<Powerup>();
+        _shieldPowerup = _shieldPowerupPrefab.GetComponent<Powerup>();
+        _speedPowerup = _speedPowerupPrefab.GetComponent<Powerup>();
+
+        _isSpawningEnemies = true;
+        _isSpawningPowerups = true;
 
         SubscribeToEvents();
 
         StartCoroutine(SpawnEnemyCoroutine());
-    }
-    public void Update() {
+        StartCoroutine(SpawnPowerupCoroutine());
     }
 
     private IEnumerator SpawnEnemyCoroutine() {
-        while (isSpawningEnemies) {
+        while (_isSpawningEnemies) {
             SpawnEnemy();
 
             yield return new WaitForSeconds(GetRandomEnemySpawnTime());
         }
     }
 
+    private IEnumerator SpawnPowerupCoroutine() {
+        while (_isSpawningPowerups) {
+            SpawnRandomPowerup();
+
+            yield return new WaitForSeconds(GetRandomPowerupSpawnTime());
+        }
+    }
+
     private void SpawnEnemy() { 
-        GameObject enemyObj = Instantiate(_enemyPrefab, GetRandomEnemySpawnPosition(enemy), Quaternion.identity);
+        GameObject enemyObj = Instantiate(_enemyPrefab, GetRandomEnemySpawnPosition(_enemy), Quaternion.identity);
         enemyObj.transform.SetParent(_enemyContainer.transform);
+    }
+
+    private void SpawnRandomPowerup() {
+        PowerupType powerupType = GetRandomPowerupType();
+        GameObject powerupObj = null;
+
+        switch (powerupType) { 
+            case PowerupType.TRIPLESHOT:
+                powerupObj = Instantiate(_tripleShotPowerupPrefab, GetRandomPowerupSpawnPosition(_tripleShotPowerup), Quaternion.identity);
+                break;
+            case PowerupType.SHIELD:
+                powerupObj = Instantiate(_shieldPowerupPrefab, GetRandomPowerupSpawnPosition(_shieldPowerup), Quaternion.identity);
+                break;
+            case PowerupType.SPEED:
+                powerupObj = Instantiate(_speedPowerupPrefab, GetRandomPowerupSpawnPosition(_speedPowerup), Quaternion.identity);
+                break;
+        }
+
+        powerupObj.transform.SetParent(_powerupContainer.transform);        
     }
 
     private Vector3 GetRandomEnemySpawnPosition(Enemy enemy) {
@@ -46,12 +94,21 @@ public class SpawnManager : MonoBehaviour {
         return new Vector3(randomX, enemy.GetMovementBoundary().maxY, enemy.transform.position.z);
     }
 
+    private Vector3 GetRandomPowerupSpawnPosition(Powerup powerup) {
+        float randomX = UnityEngine.Random.Range(powerup.GetMovementBoundary().minX, powerup.GetMovementBoundary().maxX);
+        return new Vector3(randomX, powerup.GetMovementBoundary().maxY, powerup.transform.position.z);
+    }
+
     private float GetRandomEnemySpawnTime() {
         return UnityEngine.Random.Range(_minEnemySpawnTime, _maxEnemySpawnTime);
     }
 
+    private float GetRandomPowerupSpawnTime() {
+        return UnityEngine.Random.Range(_minPowerupSpawnTime, _maxPowerupSpawnTime);
+    }
+
     public void OnPlayerDeathEventHandler() {
-        isSpawningEnemies = false;
+        _isSpawningEnemies = false;
         StopCoroutine(SpawnEnemyCoroutine());
         Cleanup();
     }
@@ -69,4 +126,12 @@ public class SpawnManager : MonoBehaviour {
             Debug.Log(e.Message);
         }
     }
+
+    public PowerupType GetRandomPowerupType() { 
+        PowerupType[] values = (PowerupType[])Enum.GetValues(typeof(PowerupType));
+        int randomIndex = UnityEngine.Random.Range(0, values.Length);
+        return values[randomIndex];
+    }
+
+    
 }
