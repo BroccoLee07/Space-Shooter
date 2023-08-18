@@ -230,6 +230,11 @@ MonoBehaviour:
   _tripleShotLaserOffset: 0.85
   _hasTripleShotPowerup: 0
   _tripleShotPowerupActiveTime: 5
+  _hasShieldPowerup: 0
+  _ShieldPowerupActiveTime: 3
+  _hasSpeedPowerup: 0
+  _speedPowerupMovementSpeed: 7.5
+  _SpeedPowerupActiveTime: 4
   _movementBoundary:
     minX: -11
     maxX: 11

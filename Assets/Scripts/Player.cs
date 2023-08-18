@@ -28,8 +28,16 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // because the offset might be different for different enemies and the player itself
     [SerializeField] private float _defaultLaserOffset;
     [SerializeField] private float _tripleShotLaserOffset;
+    [Space(10)]
+
+    [Header("Player Powerups")]
     [SerializeField] private bool _hasTripleShotPowerup;
     [SerializeField] private float _tripleShotPowerupActiveTime = 5f;
+    [SerializeField] private bool _hasShieldPowerup;
+    [SerializeField] private float _ShieldPowerupActiveTime = 3f;
+    [SerializeField] private bool _hasSpeedPowerup;
+    [SerializeField] private float _speedPowerupMovementSpeed = 5f;
+    [SerializeField] private float _SpeedPowerupActiveTime = 4f;
     [Space(10)]
 
     [Header("Player Movement Bounds")]
@@ -41,14 +49,17 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     private float _nextLaserFireTime;
     private int _currentHP;
+    private float _baseMovementSpeed;
 
     public void Start() {
         transform.position = Vector3.zero;
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
+        _baseMovementSpeed = _movementSpeed;
     }
 
     public void Update() {
+        UpdatePlayerStats();        
         CalculateMovement();
 
         // Spawn laser on space key press and after cooldown
@@ -57,7 +68,19 @@ public class Player : MonoBehaviour, IPlayerEvents {
         }
     }
 
-    public void FireLaser() {
+    private void UpdatePlayerStats() {
+        try {
+            if (_hasSpeedPowerup) {
+                _movementSpeed = _speedPowerupMovementSpeed;
+            } else {
+                _movementSpeed = _baseMovementSpeed;
+            }
+        } catch (Exception e) {
+            Debug.Log(e.Message);
+        }
+    }
+
+    private void FireLaser() {
         try { 
             // Update next laser time to track cooldown before spawning the laser  
             _nextLaserFireTime = Time.time + _attackSpeed;
@@ -76,7 +99,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
         }        
     }
 
-    public bool CanFireLaser() {
+    private bool CanFireLaser() {
         return Time.time > _nextLaserFireTime;
     }
 
@@ -115,10 +138,16 @@ public class Player : MonoBehaviour, IPlayerEvents {
     }
 
     public void TakeDamage() {
-        try { 
+        try {
+            // With shield powerup, player does not take damage
+            if (_hasShieldPowerup) {
+                return;
+            }
+
             // TODO: Handle different HP decrease for different enemies
             _currentHP -= 1;
             Debug.Log($"Current player HP: {_currentHP}");
+
             if (_currentHP <= 0) {  // Player lost all their HP
                 Debug.Log("Game over");
                 Destroy(this.gameObject);
@@ -131,7 +160,22 @@ public class Player : MonoBehaviour, IPlayerEvents {
         }
     }
 
-    public void EnableTripleShotPowerup() {
+#region PLAYER POWERUPS
+    public void EnablePowerup(PowerupType powerupType) { 
+        switch (powerupType) { 
+            case PowerupType.TRIPLESHOT:
+                EnableTripleShotPowerup();
+                break;
+            case PowerupType.SHIELD:
+                EnableShieldPowerup();
+                break;
+            case PowerupType.SPEED:
+                EnableSpeedPowerup();
+                break;
+        }
+    }
+
+    private void EnableTripleShotPowerup() {
         _hasTripleShotPowerup = true;
 
         StartCoroutine(TripleShotPowerdownCoroutine());
@@ -144,5 +188,29 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _hasTripleShotPowerup = false;
     }
 
+    private void EnableShieldPowerup() {
+        _hasShieldPowerup = true;
 
+        StartCoroutine(ShieldPowerdownCoroutine());
+    }
+
+    private IEnumerator ShieldPowerdownCoroutine() {
+        yield return new WaitForSeconds(_ShieldPowerupActiveTime);
+
+        _hasShieldPowerup = false;
+    }
+
+    private void EnableSpeedPowerup() {
+        _hasSpeedPowerup = true;
+
+        StartCoroutine(SpeedPowerdownCoroutine());
+    }
+
+    private IEnumerator SpeedPowerdownCoroutine() {
+        yield return new WaitForSeconds(_SpeedPowerupActiveTime);
+
+        _hasSpeedPowerup = false;
+    }
+
+#endregion
 }
