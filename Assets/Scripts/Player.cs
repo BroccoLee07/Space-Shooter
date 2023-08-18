@@ -59,7 +59,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     public void FireLaser() {
         try { 
-            // update next laser time to track cooldown before spawning the laser  
+            // Update next laser time to track cooldown before spawning the laser  
             _nextLaserFireTime = Time.time + _attackSpeed;
 
             // TODO: instantiate all lasers in a container for less clutter
