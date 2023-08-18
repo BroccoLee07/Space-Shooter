@@ -20,11 +20,15 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _attackSpeed = 0.5f;
 
     [Header("Player Laser")]
-    [SerializeField] private GameObject _laserPrefab;
+    [SerializeField] private GameObject _defaultLaserPrefab;
+    [SerializeField] private GameObject _tripleShotLaserPrefab;
     [Tooltip("Laser spawn distance from player")]
     // Setting laser offset here instead on in Laser script 
     // because the offset might be different for different enemies and the player itself
-    [SerializeField] private float _laserOffset;  
+    [SerializeField] private float _defaultLaserOffset;
+    [SerializeField] private float _tripleShotLaserOffset;
+    [SerializeField] private bool _hasTripleShotPowerup;
+    
 
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
@@ -38,6 +42,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     public void Start() {
         transform.position = Vector3.zero;
+        _nextLaserFireTime = 0;
         _currentHP = _maxHP;
     }
 
@@ -54,8 +59,14 @@ public class Player : MonoBehaviour, IPlayerEvents {
         try { 
             // update next laser time to track cooldown before spawning the laser  
             _nextLaserFireTime = Time.time + _attackSpeed;
-            Vector3 laserSpawnPosition = _laserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _laserOffset);
-            Instantiate(_laserPrefab, laserSpawnPosition, Quaternion.identity);
+
+            if (_hasTripleShotPowerup) {
+                Vector3 laserSpawnPosition = _tripleShotLaserPrefab.GetComponentInChildren<Laser>().GetLaserSpawnPosition(transform.position, _tripleShotLaserOffset);
+                Instantiate(_tripleShotLaserPrefab, laserSpawnPosition, Quaternion.identity);
+            } else {
+                Vector3 laserSpawnPosition = _defaultLaserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _defaultLaserOffset);
+                Instantiate(_defaultLaserPrefab, laserSpawnPosition, Quaternion.identity);
+            }
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);

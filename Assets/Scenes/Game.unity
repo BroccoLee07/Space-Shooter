@@ -224,8 +224,11 @@ MonoBehaviour:
   _maxHP: 3
   _movementSpeed: 5
   _attackSpeed: 0.5
-  _laserPrefab: {fileID: 2316256776722712484, guid: 6377fc065141ebc4b88a18abe675eb6a, type: 3}
-  _laserOffset: 1.05
+  _defaultLaserPrefab: {fileID: 2316256776722712484, guid: 6377fc065141ebc4b88a18abe675eb6a, type: 3}
+  _tripleShotLaserPrefab: {fileID: 8815826716359712676, guid: 30c2c524eafc38142a981eedc57bd691, type: 3}
+  _defaultLaserOffset: 1.05
+  _tripleShotLaserOffset: 0.85
+  _hasTripleShotPowerup: 0
   _movementBoundary:
     minX: -11
     maxX: 11

@@ -3,6 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// public enum LaserType {
+//     DEFAULT,
+//     TRIPLESHOT
+// }
+
 // TODO: Rename to bullet
 public class Laser : MonoBehaviour {
 
@@ -12,11 +17,17 @@ public class Laser : MonoBehaviour {
     // TODO: Replace bounds to be based on the actual device screen resolution
     [Tooltip("Travel limit for the top of the screen")]
     [SerializeField] private float _laserTravelTopLimit = 9f;
-    
+
+    // private LaserType laserType;
+
     public void Update() {
         Travel();        
         Cleanup();
     }
+
+    // public void Initialize(LaserType laserType) {
+    //     this.laserType = laserType;
+    // }
 
     private void Travel() {
         try { 
