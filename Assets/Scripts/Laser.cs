@@ -43,6 +43,10 @@ public class Laser : MonoBehaviour {
         try { 
             // Delete after a going out of the screen
             if (transform.position.y >= _laserTravelTopLimit) {
+                // Destroy parent as well if it exists (for tripleshot)
+                if (transform.parent != null) {
+                    Destroy(transform.parent.gameObject);
+                }
                 Destroy(this.gameObject);
             }
         } catch (Exception e) { 

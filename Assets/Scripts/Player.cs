@@ -62,6 +62,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
             // update next laser time to track cooldown before spawning the laser  
             _nextLaserFireTime = Time.time + _attackSpeed;
 
+            // TODO: instantiate all lasers in a container for less clutter
             if (_hasTripleShotPowerup) {
                 Vector3 laserSpawnPosition = _tripleShotLaserPrefab.GetComponentInChildren<Laser>().GetLaserSpawnPosition(transform.position, _tripleShotLaserOffset);
                 Instantiate(_tripleShotLaserPrefab, laserSpawnPosition, Quaternion.identity);
@@ -135,7 +136,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
         StartCoroutine(TripleShotPowerdownCoroutine());
     }
-    
+
     // Disables TripleShot powerup after a set amount of time
     private IEnumerator TripleShotPowerdownCoroutine() {
         yield return new WaitForSeconds(_tripleShotPowerupActiveTime);
