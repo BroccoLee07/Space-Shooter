@@ -111,8 +111,11 @@ public class SpawnManager : MonoBehaviour {
 
     public void OnPlayerDeathEventHandler() {
         _isSpawningEnemies = false;
+        _isSpawningPowerups = false;
+
         StopCoroutine(SpawnEnemyCoroutine());
         StopCoroutine(SpawnPowerupCoroutine());
+        
         Cleanup();
     }
 
