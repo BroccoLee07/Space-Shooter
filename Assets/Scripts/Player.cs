@@ -49,34 +49,19 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     private float _nextLaserFireTime;
     private int _currentHP;
-    private float _baseMovementSpeed;
 
     public void Start() {
         transform.position = Vector3.zero;
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
-        _baseMovementSpeed = _movementSpeed;
     }
 
     public void Update() {
-        UpdatePlayerStats();        
         CalculateMovement();
 
         // Spawn laser on space key press and after cooldown
         if (Input.GetKeyDown(KeyCode.Space) && CanFireLaser()) {
             FireLaser();
-        }
-    }
-
-    private void UpdatePlayerStats() {
-        try {
-            if (_hasSpeedPowerup) {
-                _movementSpeed = _speedPowerupMovementSpeed;
-            } else {
-                _movementSpeed = _baseMovementSpeed;
-            }
-        } catch (Exception e) {
-            Debug.Log(e.Message);
         }
     }
 
@@ -111,9 +96,13 @@ public class Player : MonoBehaviour, IPlayerEvents {
             float verticalInput = Input.GetAxis("Vertical");
             Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
-            // Move player object based on real time (time between frames), 
-            // speed multiplier, and player input for direction
-            transform.Translate(direction * _movementSpeed * Time.deltaTime);
+            // Move player object based on real time (time between frames), speed multiplier, and player input for direction
+            // Speed changes based on whether or not speed powerup is enabled
+            if (_hasSpeedPowerup) {
+                transform.Translate(direction * _speedPowerupMovementSpeed * Time.deltaTime);
+            } else {
+                transform.Translate(direction * _movementSpeed * Time.deltaTime);
+            }            
 
             // Player vertical movement restriction
             // If player object is moving vertically beyond player bounds, set player position to the limit as a restriction
