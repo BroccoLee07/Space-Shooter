@@ -44,7 +44,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     public void Update() {
         CalculateMovement();
 
-        // spawn laser on space key press and after cooldown
+        // Spawn laser on space key press and after cooldown
         if (Input.GetKeyDown(KeyCode.Space) && CanFireLaser()) {
             FireLaser();
         }
