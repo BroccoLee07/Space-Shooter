@@ -48,6 +48,7 @@ public class Powerup : MonoBehaviour {
         try {
             if (other.tag == "Player") {
                 // Collect powerup and enable collected powerup for the player
+                // TODO: Add switch with cases for all powerup types
                 other.GetComponent<Player>().EnableTripleShotPowerup();
                 Destroy(this.gameObject);
             }

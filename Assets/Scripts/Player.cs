@@ -18,6 +18,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _movementSpeed = 3.5f;
     [Tooltip("Cooldown for firing laser (seconds)")]
     [SerializeField] private float _attackSpeed = 0.5f;
+    [Space(10)]
 
     [Header("Player Laser")]
     [SerializeField] private GameObject _defaultLaserPrefab;
@@ -28,7 +29,8 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _defaultLaserOffset;
     [SerializeField] private float _tripleShotLaserOffset;
     [SerializeField] private bool _hasTripleShotPowerup;
-    
+    [SerializeField] private float _tripleShotPowerupActiveTime = 5f;
+    [Space(10)]
 
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
@@ -130,9 +132,16 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     public void EnableTripleShotPowerup() {
         _hasTripleShotPowerup = true;
-    }
 
-    public void DisableTripleShotPowerup() {
+        StartCoroutine(TripleShotPowerdownCoroutine());
+    }
+    
+    // Disables TripleShot powerup after a set amount of time
+    private IEnumerator TripleShotPowerdownCoroutine() {
+        yield return new WaitForSeconds(_tripleShotPowerupActiveTime);
+
         _hasTripleShotPowerup = false;
     }
+
+
 }
