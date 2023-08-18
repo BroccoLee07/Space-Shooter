@@ -13,11 +13,11 @@ public class Enemy : MonoBehaviour {
         Cleanup();
     }
 
-    public void OnTriggerEnter(Collider other) {
+    public void OnTriggerEnter2D(Collider2D other) {
         ResolveCollision(other);        
     }
 
-    private void ResolveCollision(Collider other) {
+    private void ResolveCollision(Collider2D other) {
         try {
             // If enemy hit the player, damage player and destroy enemy
             // If enemy hit laser, destroy laser and destroy enemy
