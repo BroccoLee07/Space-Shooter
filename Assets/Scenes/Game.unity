@@ -229,6 +229,7 @@ MonoBehaviour:
   _defaultLaserOffset: 1.05
   _tripleShotLaserOffset: 0.85
   _hasTripleShotPowerup: 0
+  _tripleShotPowerupActiveTime: 5
   _movementBoundary:
     minX: -11
     maxX: 11
@@ -633,7 +634,7 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 1196304440749202734, guid: 31efaf4239723fe4b9582c2c285b4e24, type: 3}
   _enemyContainer: {fileID: 857710299}
   _tripleShotPowerupPrefab: {fileID: 8377466624701539523, guid: d147142480bb250419b3a2265ce2e42e, type: 3}
-  _shieldPowerupPrefab: {fileID: 2743222450605012418, guid: b65d13b898f657b4085c6323c6b6ddfe, type: 3}
+  _shieldPowerupPrefab: {fileID: 4175665210266724276, guid: b65d13b898f657b4085c6323c6b6ddfe, type: 3}
   _speedPowerupPrefab: {fileID: 7292590800576752864, guid: 23381a0f4a6e30f43975e21dc52ba81e, type: 3}
   _powerupContainer: {fileID: 964849693}
   _minEnemySpawnTime: 5

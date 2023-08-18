@@ -12,6 +12,8 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private GameObject _tripleShotPowerupPrefab;
     [SerializeField] private GameObject _shieldPowerupPrefab;
     [SerializeField] private GameObject _speedPowerupPrefab;
+    // Creating container for powerup to reduce clutter esp if multiple powerups will be allowed to spawn
+    // Multiple powerups can give some depth to the game to make the player choose what powerup to get
     [SerializeField] private GameObject _powerupContainer;
 
     [Header("Enemy spawn cooldown")]
