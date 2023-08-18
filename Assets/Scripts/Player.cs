@@ -35,9 +35,9 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _tripleShotPowerupActiveTime = 5f;
     [SerializeField] private bool _hasShieldPowerup;
     [SerializeField] private float _ShieldPowerupActiveTime = 3f;
-    [SerializeField] private bool _hasSpeedPowerup;
-    [SerializeField] private float _speedPowerupMovementSpeed = 5f;
+    [SerializeField] private bool _hasSpeedPowerup;    
     [SerializeField] private float _SpeedPowerupActiveTime = 4f;
+    [SerializeField] private float _speedPowerupMovementSpeed = 5f;
     [Space(10)]
 
     [Header("Player Movement Bounds")]

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum PowerupType { 
@@ -60,9 +58,5 @@ public class Powerup : MonoBehaviour {
     public Boundary GetMovementBoundary() {
         return _movementBoundary;
     }
-
-    // public void SetPowerupType(PowerupType powerupType) {
-    //     _powerupType = powerupType;
-    // }
     
 }
