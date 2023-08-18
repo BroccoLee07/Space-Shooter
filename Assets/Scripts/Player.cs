@@ -35,6 +35,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _tripleShotPowerupActiveTime = 5f;
     [SerializeField] private bool _hasShieldPowerup;
     [SerializeField] private float _ShieldPowerupActiveTime = 3f;
+    [SerializeField] private GameObject _shieldObject;
     [SerializeField] private bool _hasSpeedPowerup;    
     [SerializeField] private float _SpeedPowerupActiveTime = 4f;
     [SerializeField] private float _speedPowerupMovementSpeed = 5f;
@@ -128,7 +129,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     public void TakeDamage() {
         try {
-            // With shield powerup, player does not take damage
+            // With shield powerup, player does not take damage for a limited time
             if (_hasShieldPowerup) {
                 return;
             }
@@ -179,13 +180,15 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     private void EnableShieldPowerup() {
         _hasShieldPowerup = true;
-
+        _shieldObject.SetActive(true);
+        
         StartCoroutine(ShieldPowerdownCoroutine());
     }
 
     private IEnumerator ShieldPowerdownCoroutine() {
         yield return new WaitForSeconds(_ShieldPowerupActiveTime);
 
+        _shieldObject.SetActive(false);
         _hasShieldPowerup = false;
     }
 
