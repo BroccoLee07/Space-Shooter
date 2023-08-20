@@ -20,6 +20,10 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _attackSpeed = 0.5f;
     [Space(10)]
 
+    // [Header("Player Ratings")]
+    // [SerializeField] private int _score;
+    // [Space(10)]
+
     [Header("Player Laser")]
     [SerializeField] private GameObject _defaultLaserPrefab;
     [SerializeField] private GameObject _tripleShotLaserPrefab;
@@ -48,13 +52,21 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // Player Events
     public event Action OnPlayerDeath;
 
+    // TODO: Create userInterfaceDTO (or some other name) to replace private instances such as this
+    // TODO: Define values of DTOs required in the scene in a central scene manager
+    private UIManager _uiManager;
+
     private float _nextLaserFireTime;
     private int _currentHP;
+    private int _score;
 
     public void Start() {
+        _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+
         transform.position = Vector3.zero;
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
+        _score = 0;
     }
 
     public void Update() {
@@ -148,6 +160,11 @@ public class Player : MonoBehaviour, IPlayerEvents {
             // TODO: Display error message on screen
             Debug.Log(e.Message);
         }
+    }
+
+    public void UpdateScore(int points) {
+        _score += points;
+        _uiManager.UpdateScoreNumberText(_score);
     }
 
 #region PLAYER POWERUPS
