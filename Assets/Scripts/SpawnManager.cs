@@ -36,7 +36,7 @@ public class SpawnManager : MonoBehaviour {
     private bool _isSpawningEnemies;
     private bool _isSpawningPowerups;
 
-    public void Start() { 
+    void Start() { 
         _enemy = _enemyPrefab.GetComponent<Enemy>();
         _tripleShotPowerup = _tripleShotPowerupPrefab.GetComponent<Powerup>();
         _shieldPowerup = _shieldPowerupPrefab.GetComponent<Powerup>();

@@ -1,3 +1,4 @@
+using System.Collections;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -10,8 +11,10 @@ public class UIManager : MonoBehaviour {
     [Space(10)]
 
     [Header("Middle UI")]
-    [SerializeField] private GameObject _gameOverText;
-    
+    [SerializeField] private TMP_Text _gameOverText;
+    [SerializeField] private float _gameOverFlickerIntervalTime = 1f;
+    [SerializeField] private TMP_Text _restartText;
+
     public void SetScoreNumberText(int newScore) {
         _scoreNumberText.SetText(newScore.ToString());
     }
@@ -21,6 +24,21 @@ public class UIManager : MonoBehaviour {
     }
 
     public void DisplayGameOverText(bool isVisible) {
-        _gameOverText.SetActive(isVisible);
+        _gameOverText.enabled = isVisible;
+        _restartText.enabled = isVisible;
+        if (isVisible) { 
+            StartCoroutine(FlickerGameOverTextCoroutine());
+        }        
+    }
+
+    public IEnumerator FlickerGameOverTextCoroutine() {
+        while (true) { 
+            yield return new WaitForSeconds(_gameOverFlickerIntervalTime);
+            if (_gameOverText.IsActive()) { 
+                _gameOverText.enabled = false;
+            } else {
+                _gameOverText.enabled = true;
+            }            
+        }        
     }
 }

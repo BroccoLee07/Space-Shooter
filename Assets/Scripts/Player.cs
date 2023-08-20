@@ -49,19 +49,22 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // TODO: Replace bounds to be based on the actual device screen resolution
     [SerializeField] private Boundary _movementBoundary;
 
+    // TODO: Move to a GameManager script to handle different events like player death or game over, etc
     // Player Events
     public event Action OnPlayerDeath;
 
     // TODO: Create userInterfaceDTO (or some other name) to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private UIManager _uiManager;
+    private GameManager _gameManager;
 
     private float _nextLaserFireTime;
     private int _currentHP;
     private int _score;
 
-    public void Start() {
+    void Start() {
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
 
         transform.position = Vector3.zero;
         _nextLaserFireTime = 0;
@@ -73,7 +76,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _uiManager.SetHPBarSprite(_currentHP);
     }
 
-    public void Update() {
+    void Update() {
         CalculateMovement();
 
         // Spawn laser on space key press and after cooldown
@@ -153,19 +156,22 @@ public class Player : MonoBehaviour, IPlayerEvents {
             // TODO: Handle different HP decrease for different enemies
             _currentHP -= 1;
             _uiManager.SetHPBarSprite(_currentHP);
-            Debug.Log($"Current player HP: {_currentHP}");
 
             if (_currentHP <= 0) {  // Player lost all their HP
-                Debug.Log("Game over");
-                _uiManager.DisplayGameOverText(true);
-                Destroy(this.gameObject);
-
-                OnPlayerDeath?.Invoke();
+                ResolvePlayerDeath();
             }
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);
         }
+    }
+
+    private void ResolvePlayerDeath() { 
+        Destroy(this.gameObject);
+        OnPlayerDeath?.Invoke();
+
+        _uiManager.DisplayGameOverText(true);
+        _gameManager.SetGameOver(true);
     }
 
     public void UpdateScore(int points) {

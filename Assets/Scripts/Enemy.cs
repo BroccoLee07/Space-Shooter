@@ -14,11 +14,11 @@ public class Enemy : MonoBehaviour {
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
 
-    public void Start() {
+    void Start() {
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
     }
-    public void Update() {
+    void Update() {
         Travel();
         Cleanup();
     }
