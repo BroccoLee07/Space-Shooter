@@ -67,7 +67,9 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
         _score = 0;
-        
+
+        // Initialize UI elements
+        _uiManager.DisplayGameOverText(false);
         _uiManager.SetHPBarSprite(_currentHP);
     }
 
@@ -155,6 +157,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
             if (_currentHP <= 0) {  // Player lost all their HP
                 Debug.Log("Game over");
+                _uiManager.DisplayGameOverText(true);
                 Destroy(this.gameObject);
 
                 OnPlayerDeath?.Invoke();
