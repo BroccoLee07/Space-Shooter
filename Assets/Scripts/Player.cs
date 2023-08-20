@@ -67,6 +67,8 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
         _score = 0;
+        
+        _uiManager.SetHPBarSprite(_currentHP);
     }
 
     public void Update() {
@@ -148,6 +150,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
             // TODO: Handle different HP decrease for different enemies
             _currentHP -= 1;
+            _uiManager.SetHPBarSprite(_currentHP);
             Debug.Log($"Current player HP: {_currentHP}");
 
             if (_currentHP <= 0) {  // Player lost all their HP
@@ -164,7 +167,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     public void UpdateScore(int points) {
         _score += points;
-        _uiManager.UpdateScoreNumberText(_score);
+        _uiManager.SetScoreNumberText(_score);
     }
 
 #region PLAYER POWERUPS
