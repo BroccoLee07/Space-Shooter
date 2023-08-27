@@ -10,6 +10,11 @@ public class Enemy : MonoBehaviour {
     [Tooltip("Points value rewarded to the player to add to their total score")]
     [SerializeField] private int _points = 10;
 
+    [SerializeField] private Animator _enemyAnimator;
+    [SerializeField] private AnimationClip _enemyExplodeAnim;
+    [Tooltip("Additional time to wait before the enemy is destroyed. Negative value decreases wait time")]
+    [SerializeField] private float _enemyDestroyWaitOffset;
+    private float _enemyExplodeAnimLength;
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
@@ -17,6 +22,15 @@ public class Enemy : MonoBehaviour {
     void Start() {
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _enemyExplodeAnimLength = _enemyExplodeAnim.length;
+        // Layer for explode anim is 0
+        // _enemyExplodeAnimLength = _enemyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        // Debug.Log($"enemy anim clip info: {_enemyAnimator.GetCurrentAnimatorClipInfo(0).Length}");
+        // for(int i = 0; i < _enemyAnimator.animationClips.Length; i++) {                //For all animations
+        //     if(_enemyAnimator.animationClips[i].name == "AnimationName") {           //If it has the same name as your clip
+        //         time = _enemyAnimator.animationClips[i].length;
+        //     }
+        // }
     }
     void Update() {
         Travel();
@@ -39,13 +53,32 @@ public class Enemy : MonoBehaviour {
                 } else {                    
                     throw new Exception("Missing Player script component");
                 }
-                Destroy(this.gameObject);
+                // Disable script to avoid any triggers when player gets hit and the enemy is already dead
+                // GetComponent<Enemy>().enabled = false;
+
+                // Disable enemy movement since it is already dead and avoid colliding with the player
+                // If player collides with the explosion, they can still lose HP
+                _speed = 0;
+
+                // Trigger animation for enemy death
+                _enemyAnimator.SetTrigger("OnEnemyDeath");
+                // Wait for animation to end + offset
+                Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);              
             } else if (other.tag == "Laser") {
                 if (_player != null) { 
                     _player.UpdateScore(_points);
                 }                
                 Destroy(other.gameObject);
-                Destroy(this.gameObject);
+                // Disable script to avoid any triggers when player gets hit and the enemy is already dead
+                // GetComponent<Enemy>().enabled = false;
+
+                // Disable enemy movement since it is already dead and avoid colliding with the player
+                // If player collides with the explosion, they can still lose HP
+                _speed = 0;
+
+                // Trigger animation for enemy death
+                _enemyAnimator.SetTrigger("OnEnemyDeath");
+                Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);
             }
         } catch (Exception e) {
             // TODO: Display error message on screen

@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6987285499357948675}
   - component: {fileID: 6374624467189515910}
   - component: {fileID: 3603823446735566726}
+  - component: {fileID: 7314135398765597243}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Enemy
@@ -152,3 +153,27 @@ MonoBehaviour:
     maxX: 9
     minY: -5
     maxY: 9
+  _points: 10
+  _enemyAnimator: {fileID: 7314135398765597243}
+  _enemyExplodeAnim: {fileID: 7400000, guid: a3c90acfe43a24841bfcc8d3b9cb3ea7, type: 2}
+  _enemyDestroyWaitOffset: 0
+--- !u!95 &7314135398765597243
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1196304440749202734}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 990655ca92b2c0e46bb8cbfd81085986, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
