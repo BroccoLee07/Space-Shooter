@@ -33,6 +33,10 @@ public class GameManager : MonoBehaviour {
         _isGameStart = isGameStart;
     }
 
+    public bool GetGameOver() {
+        return _isGameOver;
+    }
+
     public void SetGameOver(bool isGameOver) {
         _isGameOver = isGameOver;
     }

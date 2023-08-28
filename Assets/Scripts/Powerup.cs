@@ -13,6 +13,10 @@ public class Powerup : MonoBehaviour {
     [SerializeField] private Boundary _movementBoundary;
     [SerializeField] private PowerupType _powerupType;
 
+    private GameManager _gameManager;
+    void Start() { 
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
     public void Update() {
         Travel();
         Cleanup();
@@ -34,7 +38,7 @@ public class Powerup : MonoBehaviour {
 
     private void Cleanup() {
         try {
-            if (transform.position.y < _movementBoundary.minY) {
+            if (transform.position.y < _movementBoundary.minY || _gameManager.GetGameOver()) {
                 Destroy(this.gameObject);
             }
         } catch (Exception e) {

@@ -18,10 +18,13 @@ public class Enemy : MonoBehaviour {
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
+    private GameManager _gameManager;
 
     void Start() {
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
         _enemyExplodeAnimLength = _enemyExplodeAnim.length;
     }
     void Update() {
@@ -101,6 +104,8 @@ public class Enemy : MonoBehaviour {
             if (transform.position.y < _movementBoundary.minY) {
                 float randomX = UnityEngine.Random.Range(_movementBoundary.minX, _movementBoundary.maxX);
                 transform.position = new Vector3(randomX, _movementBoundary.maxY, transform.position.z);
+            } else if (_gameManager.GetGameOver()) {
+                Destroy(this.gameObject);
             }
         } catch (Exception e) {
             // TODO: Display error message on screen

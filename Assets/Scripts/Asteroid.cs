@@ -15,10 +15,12 @@ public class Asteroid : MonoBehaviour {
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
+    private GameManager _gameManager;
 
     void Start() { 
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     void FixedUpdate() {
@@ -80,7 +82,7 @@ public class Asteroid : MonoBehaviour {
     }
 
     private void Cleanup() {
-        if (transform.position.y <= _movementBounds.minY) {
+        if (transform.position.y <= _movementBounds.minY || _gameManager.GetGameOver()) {
             Destroy(this.gameObject);
         }
     }

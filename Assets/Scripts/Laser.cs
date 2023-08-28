@@ -17,6 +17,11 @@ public class Laser : MonoBehaviour {
     [SerializeField] private float _laserTravelTopLimit = 9f;
 
     // private LaserType laserType;
+    private GameManager _gameManager;
+
+    void Start() { 
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+    }
 
     public void Update() {
         Travel();        
@@ -40,7 +45,7 @@ public class Laser : MonoBehaviour {
     private void Cleanup() {
         try { 
             // Delete after a going out of the screen
-            if (transform.position.y >= _laserTravelTopLimit) {
+            if (transform.position.y >= _laserTravelTopLimit || _gameManager.GetGameOver()) {
                 // Destroy parent as well if it exists (for tripleshot)
                 if (transform.parent != null) {
                     Destroy(transform.parent.gameObject);
