@@ -24,9 +24,9 @@ public class UIManager : MonoBehaviour {
     }
 
     private void InitializeUI() { 
-        _gameStartText.enabled = false;
-        _gameOverText.enabled = false;
-        _restartText.enabled = false;
+        _gameStartText.gameObject.SetActive(false);
+        _gameOverText.gameObject.SetActive(false);
+        _restartText.gameObject.SetActive(false);
     }
 
     public void SetScoreNumberText(int newScore) {
@@ -56,29 +56,34 @@ public class UIManager : MonoBehaviour {
     }
 
     public IEnumerator FlickerGameStartTextCoroutine() {
+        _gameStartText.gameObject.SetActive(_shouldGameStartTextFlicker);
+        
         while (_shouldGameStartTextFlicker) {
             yield return new WaitForSeconds(_gameStartFlickerIntervalTime);
             if (_gameStartText.IsActive()) { 
-                _gameStartText.enabled = false;
+                _gameStartText.gameObject.SetActive(false);
             } else {
-                _gameStartText.enabled = true;
-            }            
+                _gameStartText.gameObject.SetActive(true);
+            }
         }
 
-        _gameStartText.enabled = _shouldGameStartTextFlicker;
+        _gameStartText.gameObject.SetActive(_shouldGameStartTextFlicker);
     }
 
     public IEnumerator FlickerGameOverTextCoroutine() {
+        _gameOverText.gameObject.SetActive(_shouldGameOverTextFlicker);
+        _restartText.gameObject.SetActive( _shouldGameOverTextFlicker);
+
         while (_shouldGameOverTextFlicker) { 
             yield return new WaitForSeconds(_gameOverFlickerIntervalTime);
             if (_gameOverText.IsActive()) { 
                 _gameOverText.enabled = false;
             } else {
                 _gameOverText.enabled = true;
-            }            
+            }
         }
 
-        _gameOverText.enabled = _shouldGameOverTextFlicker;
-        _restartText.enabled = _shouldGameOverTextFlicker;        
+        _gameOverText.gameObject.SetActive(_shouldGameOverTextFlicker);
+        _restartText.gameObject.SetActive( _shouldGameOverTextFlicker);
     }
 }
