@@ -4,16 +4,23 @@ public class Asteroid : MonoBehaviour {
     [SerializeField] private float _movementSpeed = 3f;
     [SerializeField] private float _rotateSpeed = 20f;
     [SerializeField] private Boundary _movementBounds;
+    [Tooltip("Points value rewarded to the player to add to their total score")]
+    [SerializeField] private int _points = 5;
 
     [SerializeField] private GameObject _explosionPrefab;
-    [SerializeField] private AnimationClip _explodeAnim;
+    
     [Tooltip("Additional time to wait before the asteroid is destroyed. Negative value decreases wait time")]
     [SerializeField] private float _asteroidWaitTimeOffset;
-    private float _explodeAnimLength;
+    
+    // TODO: Create PlayerDTO to replace private instances such as this
+    // TODO: Define values of DTOs required in the scene in a central scene manager
+    private Player _player;
 
-    void Start() {
-        _explodeAnimLength = _explodeAnim.length;
+    void Start() { 
+        // TODO: Get playerDTO instead of finding a gameobject with the certain script component
+        _player = GameObject.Find("Player").GetComponent<Player>();
     }
+
     void FixedUpdate() {
         Travel();
         RotateAnim();
@@ -40,6 +47,9 @@ public class Asteroid : MonoBehaviour {
     private void ResolveCollision(Collider2D other) {
         // TODO: Set these tag names in a Constants file
         if (other.tag == "Laser") {
+            if (_player != null) { 
+                _player.UpdateScore(_points);
+            }
             // TODO: Handle laser destruction in Laser script itself
             Destroy(other.gameObject);
 
@@ -62,11 +72,11 @@ public class Asteroid : MonoBehaviour {
         // GetComponent<Animator>().SetTrigger("OnAsteroidCollisoin");
         // Destroy(this.gameObject, _explodeAnimLength + _asteroidWaitTimeOffset);
 
+        // TODO: Create separate script for explosion itself
         GameObject explosion = Instantiate(_explosionPrefab, this.transform.position, Quaternion.identity);
         explosion.transform.localScale = this.transform.localScale;
 
         Destroy(this.gameObject, _asteroidWaitTimeOffset);
-        Destroy(explosion.gameObject, _explodeAnimLength);
     }
 
     private void Cleanup() {
