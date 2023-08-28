@@ -7,8 +7,8 @@ public class Asteroid : MonoBehaviour {
 
     [SerializeField] private GameObject _explosionPrefab;
     [SerializeField] private AnimationClip _explodeAnim;
-    // [Tooltip("Additional time to wait before the asteroid is destroyed. Negative value decreases wait time")]
-    // [SerializeField] private float _asteroidWaitTimeOffset;
+    [Tooltip("Additional time to wait before the asteroid is destroyed. Negative value decreases wait time")]
+    [SerializeField] private float _asteroidWaitTimeOffset;
     private float _explodeAnimLength;
 
     void Start() {
@@ -37,12 +37,15 @@ public class Asteroid : MonoBehaviour {
         transform.RotateAround(GetComponent<Renderer>().bounds.center, Vector3.forward, _rotateSpeed * Time.fixedDeltaTime);
     }
 
-    private void ResolveCollision(Collider2D other) { 
+    private void ResolveCollision(Collider2D other) {
         // TODO: Set these tag names in a Constants file
-        if (other.tag == "Laser" || other.tag == "Enemy") {
+        if (other.tag == "Laser") {
+            // TODO: Handle laser destruction in Laser script itself
             Destroy(other.gameObject);
-            
-            ExplodeAsteroid();            
+
+            ExplodeAsteroid();
+        } else if (other.tag == "Enemy") { 
+            ExplodeAsteroid();
         } else if (other.tag == "Player") {
             // TODO: Get player script component and make player take damage
             Player player = other.GetComponent<Player>();
@@ -62,7 +65,7 @@ public class Asteroid : MonoBehaviour {
         GameObject explosion = Instantiate(_explosionPrefab, this.transform.position, Quaternion.identity);
         explosion.transform.localScale = this.transform.localScale;
 
-        Destroy(this.gameObject);
+        Destroy(this.gameObject, _asteroidWaitTimeOffset);
         Destroy(explosion.gameObject, _explodeAnimLength);
     }
 

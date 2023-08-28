@@ -48,40 +48,40 @@ public class Enemy : MonoBehaviour {
                 // Disable script to avoid any triggers when player gets hit and the enemy is already dead
                 // GetComponent<Enemy>().enabled = false;
                 // Disable collider to avoid any further triggers
-                GetComponent<Collider2D>().enabled = false;
+                // GetComponent<Collider2D>().enabled = false;
 
-                // Disable enemy movement since it is already dead and avoid colliding with the player
-                // If player collides with the explosion, they can still lose HP
-                // TODO: Try slowly reducing speed instead of suddenly pausing? Something with just stopping there and exploding looks off
-                _speed = 0;
-
-                // Trigger animation for enemy death
-                _enemyAnimator.SetTrigger("OnEnemyDeath");
-                // Wait for animation to end + offset
-                Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);              
+                ExplodeEnemy();              
             } else if (other.tag == "Laser") {
                 if (_player != null) { 
                     _player.UpdateScore(_points);
                 }
                 // Disable collider to avoid any further triggers
-                GetComponent<Collider2D>().enabled = false;              
+                // GetComponent<Collider2D>().enabled = false;              
                 Destroy(other.gameObject);
-                // Disable script to avoid any triggers when player gets hit and the enemy is already dead
-                // GetComponent<Enemy>().enabled = false;
 
-                // Disable enemy movement since it is already dead and avoid colliding with the player
-                // If player collides with the explosion, they can still lose HP
-                _speed = 0;
-
-                // Trigger animation for enemy death
-                _enemyAnimator.SetTrigger("OnEnemyDeath");
-                Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);
+                ExplodeEnemy();               
+            } else if(other.tag == "Asteroid") {
+                ExplodeEnemy();
             }
         } catch (Exception e) {
             // TODO: Display error message on screen
             Debug.Log(e.Message);
         }
         
+    }
+
+    private void ExplodeEnemy() {
+        // Disable collider to avoid any further triggers
+        GetComponent<Collider2D>().enabled = false;
+
+        // Disable enemy movement since it is already dead and avoid colliding with the player
+        // If player collides with the explosion, they can still lose HP
+        // TODO: Try slowly reducing speed instead of suddenly pausing? Something with just stopping there and exploding looks off
+        _speed = 0;
+
+        // Trigger animation for enemy death
+        _enemyAnimator.SetTrigger("OnEnemyDeath");
+        Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);
     }
 
     private void Travel() {

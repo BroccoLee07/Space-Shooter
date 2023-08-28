@@ -166,7 +166,9 @@ public class SpawnManager : MonoBehaviour {
     public void OnPlayerDeathEventHandler() {
         _isSpawningEnemies = false;
         _isSpawningPowerups = false;
+        _isSpawningAsteroids = false;
 
+        StopCoroutine(SpawnAsteroidCoroutine());
         StopCoroutine(SpawnEnemyCoroutine());
         StopCoroutine(SpawnPowerupCoroutine());
         
