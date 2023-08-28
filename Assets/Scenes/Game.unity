@@ -895,7 +895,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1879300835}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &884544466
 GameObject:
@@ -1064,7 +1064,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1879300835}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1036041735
 GameObject:
@@ -1809,6 +1809,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 2094560132}
   - {fileID: 857710300}
   - {fileID: 964849694}
   m_Father: {fileID: 0}
@@ -1826,6 +1827,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e482459b9b2b0f4e971a56beb04ea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _asteroidPrefab: {fileID: 3109544979489240567, guid: 0218d642ef5e85e4996f33628c6ba205, type: 3}
+  _asteroidContainer: {fileID: 2094560131}
   _enemyPrefab: {fileID: 1196304440749202734, guid: 31efaf4239723fe4b9582c2c285b4e24, type: 3}
   _enemyContainer: {fileID: 857710299}
   _tripleShotPowerupPrefab: {fileID: 8377466624701539523, guid: d147142480bb250419b3a2265ce2e42e, type: 3}
@@ -1836,3 +1839,38 @@ MonoBehaviour:
   _maxEnemySpawnTime: 8
   _minPowerupSpawnTime: 10
   _maxPowerupSpawnTime: 15
+  _minAsteroidSpawnTime: 3
+  _maxAsteroidSpawnTime: 9
+  _minAsteroidSize: 0.2
+  _maxAsteroidSize: 1
+--- !u!1 &2094560131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2094560132}
+  m_Layer: 0
+  m_Name: AsteroidContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2094560132
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094560131}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1879300835}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

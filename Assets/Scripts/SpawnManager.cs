@@ -5,6 +5,11 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
 
+    [Header("Asteroid")]
+    [SerializeField] private GameObject _asteroidPrefab;
+    [SerializeField] private GameObject _asteroidContainer;
+
+    [Header("Enemy")]
     [SerializeField] private GameObject _enemyPrefab;
     [SerializeField] private GameObject _enemyContainer;
 
@@ -21,34 +26,63 @@ public class SpawnManager : MonoBehaviour {
     [SerializeField] private float _minEnemySpawnTime = 5f;
     [Tooltip("Maximum spawn time for enemy (seconds)")]
     [SerializeField] private float _maxEnemySpawnTime = 8f;
+    [Space(10)]
 
     [Header("Powerup spawn cooldown")]
     [Tooltip("Minimum spawn time for powerup (seconds)")]
     [SerializeField] private float _minPowerupSpawnTime = 10f;
     [Tooltip("Maximum spawn time for powerup (seconds)")]
     [SerializeField] private float _maxPowerupSpawnTime = 15f;
+    [Space(10)]
 
+    [Header("Asteroid spawn cooldown")]
+    [Tooltip("Minimum spawn time for asteroid (seconds)")]
+    [SerializeField] private float _minAsteroidSpawnTime = 3f;
+    [Tooltip("Maximum spawn time for asteroid (seconds)")]
+    [SerializeField] private float _maxAsteroidSpawnTime = 9f;
+    [Tooltip("Minimum scaling of the asteroid when spawned")]
+    [SerializeField] private float _minAsteroidSize = 0.2f;
+    [Tooltip("Maximum scaling of the asteroid when spawned")]
+    [SerializeField] private float _maxAsteroidSize = 1f;
+    [Space(10)]
+
+    private Asteroid _asteroid; 
     private Enemy _enemy;
     private Powerup _tripleShotPowerup;
     private Powerup _shieldPowerup;
     private Powerup _speedPowerup;
 
+    private bool _isSpawningAsteroids;
     private bool _isSpawningEnemies;
     private bool _isSpawningPowerups;
 
-    void Start() { 
+    void Start() {
+        _asteroid = _asteroidPrefab.GetComponent<Asteroid>();
         _enemy = _enemyPrefab.GetComponent<Enemy>();
         _tripleShotPowerup = _tripleShotPowerupPrefab.GetComponent<Powerup>();
         _shieldPowerup = _shieldPowerupPrefab.GetComponent<Powerup>();
         _speedPowerup = _speedPowerupPrefab.GetComponent<Powerup>();
 
+        _isSpawningAsteroids = true;
         _isSpawningEnemies = true;
         _isSpawningPowerups = true;
 
         SubscribeToEvents();
 
+        // TODO: Find another way to make sure this is set because right now, it's a race timing issue with all the start methods
+        // _asteroid.SetBaseRotateSpeed(_asteroid.GetBaseRotateSpeed());
+
+        StartCoroutine(SpawnAsteroidCoroutine());
         StartCoroutine(SpawnEnemyCoroutine());
         StartCoroutine(SpawnPowerupCoroutine());
+    }
+
+    private IEnumerator SpawnAsteroidCoroutine() {
+        while (_isSpawningAsteroids) {
+            SpawnAsteroid();
+
+            yield return new WaitForSeconds(GetRandomAsteroidSpawnTime());
+        }
     }
 
     private IEnumerator SpawnEnemyCoroutine() {
@@ -65,6 +99,18 @@ public class SpawnManager : MonoBehaviour {
 
             yield return new WaitForSeconds(GetRandomPowerupSpawnTime());
         }
+    }
+
+    private void SpawnAsteroid() {
+        
+        GameObject asteroidObj = Instantiate(_asteroidPrefab, GetRandomAsteroidSpawnPosition(_asteroid), Quaternion.identity);
+
+        float scale = GetRandomAsteroidScale();        
+        asteroidObj.transform.localScale = new Vector3(scale, scale, scale);        
+        // Affect asteroid's rotate speed with its scale
+        asteroidObj.GetComponent<Asteroid>().SetRotateSpeed(_asteroid.GetRotateSpeed() / scale);
+
+        asteroidObj.transform.SetParent(_asteroidContainer.transform);
     }
 
     private void SpawnEnemy() { 
@@ -91,6 +137,10 @@ public class SpawnManager : MonoBehaviour {
         powerupObj.transform.SetParent(_powerupContainer.transform);        
     }
 
+    private Vector3 GetRandomAsteroidSpawnPosition(Asteroid asteroid) {
+        float randomX = UnityEngine.Random.Range(asteroid.GetMovementBoundary().minX, asteroid.GetMovementBoundary().maxX);
+        return new Vector3(randomX, asteroid.GetMovementBoundary().maxY, asteroid.transform.position.z);
+    }
     private Vector3 GetRandomEnemySpawnPosition(Enemy enemy) {
         float randomX = UnityEngine.Random.Range(enemy.GetMovementBoundary().minX, enemy.GetMovementBoundary().maxX);
         return new Vector3(randomX, enemy.GetMovementBoundary().maxY, enemy.transform.position.z);
@@ -101,12 +151,20 @@ public class SpawnManager : MonoBehaviour {
         return new Vector3(randomX, powerup.GetMovementBoundary().maxY, powerup.transform.position.z);
     }
 
+    private float GetRandomAsteroidSpawnTime() {
+        return UnityEngine.Random.Range(_minAsteroidSpawnTime, _maxAsteroidSpawnTime);
+    }
+
     private float GetRandomEnemySpawnTime() {
         return UnityEngine.Random.Range(_minEnemySpawnTime, _maxEnemySpawnTime);
     }
 
     private float GetRandomPowerupSpawnTime() {
         return UnityEngine.Random.Range(_minPowerupSpawnTime, _maxPowerupSpawnTime);
+    }
+
+    private float GetRandomAsteroidScale() {
+        return UnityEngine.Random.Range(_minAsteroidSize, _maxAsteroidSize);
     }
 
     public void OnPlayerDeathEventHandler() {
