@@ -24,7 +24,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // [SerializeField] private int _score;
     // [Space(10)]
 
-    [Header("Player Laser")]
+    [Header("Laser")]
     [SerializeField] private GameObject _defaultLaserPrefab;
     [SerializeField] private GameObject _tripleShotLaserPrefab;
     [Tooltip("Laser spawn distance from player")]
@@ -34,7 +34,10 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private float _tripleShotLaserOffset;
     [Space(10)]
 
-    [Header("Player Powerups")]
+    [Header("Engine Fire")]
+    [SerializeField] private GameObject[] _engineFires;
+
+    [Header("Powerups")]
     [SerializeField] private bool _hasTripleShotPowerup;
     [SerializeField] private float _tripleShotPowerupActiveTime = 5f;
     [SerializeField] private bool _hasShieldPowerup;
@@ -68,7 +71,11 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
+        // Initialize player
         transform.position = Vector3.zero;
+        foreach (GameObject engineFire in _engineFires) { 
+            engineFire.SetActive(false);
+        }
         _nextLaserFireTime = 0;
         _currentHP = _maxHP;
         _score = 0;
@@ -174,11 +181,28 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
             if (_currentHP <= 0) {  // Player lost all their HP
                 ResolvePlayerDeath();
+            } else {
+                DisplayEngineFire();
             }
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);
         }
+    }
+
+    private void DisplayEngineFire() {
+        // Enable fire engine gameobject to show animation of player getting hurt
+        bool _isDisplayingNewEngineFire = false;
+        
+        do { 
+            int randomIndex = UnityEngine.Random.Range(0, _engineFires.Length);
+
+            if (!_engineFires[randomIndex].activeInHierarchy) {
+                _engineFires[randomIndex].SetActive(true);
+                _isDisplayingNewEngineFire = true;
+            }
+
+        } while (!_isDisplayingNewEngineFire);
     }
 
     private void ResolvePlayerDeath() { 
