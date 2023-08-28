@@ -6,12 +6,31 @@ using UnityEngine.UIElements;
 
 public class GameManager : MonoBehaviour {
 
+    public enum GameState { 
+        MAIN_MENU,
+        GAME_START,
+        GAME_OVER
+    }
+    // TODO: Replace with GameState
     [SerializeField] private bool _isGameOver;
+    // State where game is started and waiting for user's input (enter key)
+    [SerializeField] private bool _isGameStart;
+
+    void Start() {
+        _isGameStart = false;
+    }
 
     void Update() {
         if (_isGameOver && Input.GetKeyDown(KeyCode.R)) {
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
+    }
+
+    public bool GetGameStart() {
+        return _isGameStart;
+    }
+    public void SetGameStart(bool isGameStart) {
+        _isGameStart = isGameStart;
     }
 
     public void SetGameOver(bool isGameOver) {

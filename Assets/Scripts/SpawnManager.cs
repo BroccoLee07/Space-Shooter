@@ -60,13 +60,15 @@ public class SpawnManager : MonoBehaviour {
         _enemy = _enemyPrefab.GetComponent<Enemy>();
         _tripleShotPowerup = _tripleShotPowerupPrefab.GetComponent<Powerup>();
         _shieldPowerup = _shieldPowerupPrefab.GetComponent<Powerup>();
-        _speedPowerup = _speedPowerupPrefab.GetComponent<Powerup>();
+        _speedPowerup = _speedPowerupPrefab.GetComponent<Powerup>();        
 
+        SubscribeToEvents();
+    }
+
+    public void StartSpawning() { 
         _isSpawningAsteroids = true;
         _isSpawningEnemies = true;
         _isSpawningPowerups = true;
-
-        SubscribeToEvents();
 
         StartCoroutine(SpawnAsteroidCoroutine());
         StartCoroutine(SpawnEnemyCoroutine());

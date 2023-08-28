@@ -11,8 +11,10 @@ public class UIManager : MonoBehaviour {
     [Space(10)]
 
     [Header("Middle UI")]
+    [SerializeField] private TMP_Text _gameStartText;
+    [SerializeField] private float _gameStartFlickerIntervalTime = 0.5f;
     [SerializeField] private TMP_Text _gameOverText;
-    [SerializeField] private float _gameOverFlickerIntervalTime = 1f;
+    [SerializeField] private float _gameOverFlickerIntervalTime = 0.5f;
     [SerializeField] private TMP_Text _restartText;
 
     public void SetScoreNumberText(int newScore) {
@@ -23,11 +25,34 @@ public class UIManager : MonoBehaviour {
         _hpBar.sprite = _hpBarSprites[currentHP];
     }
 
+    public void DisplayGameStartText(bool isVisible) {
+        Debug.Log($"Game start text should be displayed? {isVisible}");
+        _gameStartText.enabled = isVisible;
+        if (isVisible) { 
+            StartCoroutine(FlickerGameStartTextCoroutine());
+        // } else {
+        //     StopCoroutine(FlickerGameStartTextCoroutine());
+        }
+    }
+
     public void DisplayGameOverText(bool isVisible) {
         _gameOverText.enabled = isVisible;
         _restartText.enabled = isVisible;
         if (isVisible) { 
             StartCoroutine(FlickerGameOverTextCoroutine());
+        // } else {
+        //     StopCoroutine(FlickerGameOverTextCoroutine());
+        }
+    }
+
+    public IEnumerator FlickerGameStartTextCoroutine() {
+        while (true) { 
+            yield return new WaitForSeconds(_gameStartFlickerIntervalTime);
+            if (_gameStartText.IsActive()) { 
+                _gameStartText.enabled = false;
+            } else {
+                _gameStartText.enabled = true;
+            }            
         }        
     }
 

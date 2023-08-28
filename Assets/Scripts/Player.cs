@@ -57,6 +57,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private UIManager _uiManager;
     private GameManager _gameManager;
+    private SpawnManager _spawnManager;
 
     private float _nextLaserFireTime;
     private int _currentHP;
@@ -65,6 +66,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     void Start() {
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
 
         transform.position = Vector3.zero;
         _nextLaserFireTime = 0;
@@ -72,17 +74,30 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _score = 0;
 
         // Initialize UI elements
+        _uiManager.DisplayGameStartText(true);
         _uiManager.DisplayGameOverText(false);
         _uiManager.SetHPBarSprite(_currentHP);
+
+        _gameManager.SetGameStart(false);
     }
 
     void Update() {
-        CalculateMovement();
+        if (_gameManager.GetGameStart()) { 
+            CalculateMovement();
+        }
 
         // Spawn laser on space key press and after cooldown
-        if (Input.GetKeyDown(KeyCode.Space) && CanFireLaser()) {
+        if (Input.GetKeyDown(KeyCode.Space) && CanFireLaser() && _gameManager.GetGameStart()) {
             FireLaser();
+        } else if (!_gameManager.GetGameStart() && Input.GetKeyDown(KeyCode.Return)) {
+            StartGame();
         }
+    }
+
+    private void StartGame() {
+        _gameManager.SetGameStart(true);
+        _uiManager.DisplayGameStartText(false);
+        _spawnManager.StartSpawning();
     }
 
     private void FireLaser() {
