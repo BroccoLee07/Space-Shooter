@@ -40,8 +40,9 @@ public class Asteroid : MonoBehaviour {
     private void ResolveCollision(Collider2D other) { 
         // TODO: Set these tag names in a Constants file
         if (other.tag == "Laser" || other.tag == "Enemy") {
-            ExplodeAsteroid();
             Destroy(other.gameObject);
+            
+            ExplodeAsteroid();            
         } else if (other.tag == "Player") {
             // TODO: Get player script component and make player take damage
             Player player = other.GetComponent<Player>();
