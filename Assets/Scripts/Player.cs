@@ -27,6 +27,9 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [Header("Laser")]
     [SerializeField] private GameObject _defaultLaserPrefab;
     [SerializeField] private GameObject _tripleShotLaserPrefab;
+    // TODO: Move this under laser script?
+    [SerializeField] private AudioClip _laserSfx;
+
     [Tooltip("Laser spawn distance from player")]
     // Setting laser offset here instead on in Laser script 
     // because the offset might be different for different enemies and the player itself
@@ -61,6 +64,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     private UIManager _uiManager;
     private GameManager _gameManager;
     private SpawnManager _spawnManager;
+    private AudioManager _audioManager;
 
     private float _nextLaserFireTime;
     private int _currentHP;
@@ -70,6 +74,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
         _uiManager = GameObject.Find("UIManager").GetComponent<UIManager>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
+        _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         // Initialize player
         transform.position = Vector3.zero;
@@ -120,6 +125,10 @@ public class Player : MonoBehaviour, IPlayerEvents {
                 Vector3 laserSpawnPosition = _defaultLaserPrefab.GetComponent<Laser>().GetLaserSpawnPosition(transform.position, _defaultLaserOffset);
                 Instantiate(_defaultLaserPrefab, laserSpawnPosition, Quaternion.identity);
             }
+
+            // Play SFX for laser
+            _audioManager.sfxSource.clip = _laserSfx;
+            _audioManager.sfxSource.Play();
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);
