@@ -479,7 +479,6 @@ MonoBehaviour:
   _attackSpeed: 0.45
   _defaultLaserPrefab: {fileID: 2316256776722712484, guid: 6377fc065141ebc4b88a18abe675eb6a, type: 3}
   _tripleShotLaserPrefab: {fileID: 8815826716359712676, guid: 30c2c524eafc38142a981eedc57bd691, type: 3}
-  _laserSfx: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
   _defaultLaserOffset: 1.05
   _tripleShotLaserOffset: 0.85
   _engineFires:
@@ -498,6 +497,10 @@ MonoBehaviour:
     maxX: 11
     minY: -3.8
     maxY: 0
+  _laserSfx: {fileID: 8300000, guid: 75676f361bdfeaf41a46623e95df3dbc, type: 3}
+  _laserSfxVolume: 0.25
+  _explosionSfx: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _explosionSfxVolume: 0.3
 --- !u!61 &492613185
 BoxCollider2D:
   m_ObjectHideFlags: 0

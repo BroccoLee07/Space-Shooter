@@ -11,16 +11,20 @@ public class Asteroid : MonoBehaviour {
     
     [Tooltip("Additional time to wait before the asteroid is destroyed. Negative value decreases wait time")]
     [SerializeField] private float _asteroidWaitTimeOffset;
+    [SerializeField] private AudioClip _explosionSfx;
+    [SerializeField] private float _explosionSfxVolume = 0.15f;
     
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
     private GameManager _gameManager;
+    private AudioManager _audioManager;
 
     void Start() { 
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
 
     void FixedUpdate() {
@@ -77,6 +81,8 @@ public class Asteroid : MonoBehaviour {
         // TODO: Create separate script for explosion itself
         GameObject explosion = Instantiate(_explosionPrefab, this.transform.position, Quaternion.identity);
         explosion.transform.localScale = this.transform.localScale;
+
+        _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
 
         Destroy(this.gameObject, _asteroidWaitTimeOffset);
     }

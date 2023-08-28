@@ -143,6 +143,7 @@ MonoBehaviour:
     maxX: -9
     minY: -9
     maxY: 9
+  _points: 5
   _explosionPrefab: {fileID: 4525032750546636156, guid: 0e27b05d21be13b4fba56a9e13c4fe89, type: 3}
-  _explodeAnim: {fileID: 7400000, guid: 7f3590eba6da23e47ac68e817ae78b3c, type: 2}
   _asteroidWaitTimeOffset: 0.25
+  _explosionSfx: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}

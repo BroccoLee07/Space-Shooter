@@ -14,16 +14,20 @@ public class Enemy : MonoBehaviour {
     [SerializeField] private AnimationClip _enemyExplodeAnim;
     [Tooltip("Additional time to wait before the enemy is destroyed. Negative value decreases wait time")]
     [SerializeField] private float _enemyDestroyWaitOffset;
+    [SerializeField] private AudioClip _explosionSfx;
+    [SerializeField] private float _explosionSfxVolume = 0.15f;
     private float _enemyExplodeAnimLength;
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
     private Player _player;
     private GameManager _gameManager;
+    private AudioManager _audioManager;
 
     void Start() {
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         _enemyExplodeAnimLength = _enemyExplodeAnim.length;
     }
@@ -84,6 +88,7 @@ public class Enemy : MonoBehaviour {
 
         // Trigger animation for enemy death
         _enemyAnimator.SetTrigger("OnEnemyDeath");
+        _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
         Destroy(this.gameObject, _enemyExplodeAnimLength + _enemyDestroyWaitOffset);
     }
 

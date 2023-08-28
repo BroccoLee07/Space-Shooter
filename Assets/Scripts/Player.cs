@@ -26,9 +26,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     [Header("Laser")]
     [SerializeField] private GameObject _defaultLaserPrefab;
-    [SerializeField] private GameObject _tripleShotLaserPrefab;
-    // TODO: Move this under laser script?
-    [SerializeField] private AudioClip _laserSfx;
+    [SerializeField] private GameObject _tripleShotLaserPrefab;    
 
     [Tooltip("Laser spawn distance from player")]
     // Setting laser offset here instead on in Laser script 
@@ -54,6 +52,14 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [Header("Player Movement Bounds")]
     // TODO: Replace bounds to be based on the actual device screen resolution
     [SerializeField] private Boundary _movementBoundary;
+
+    [Header("Player SFX")]
+    // TODO: Move this under laser script?
+    [SerializeField] private AudioClip _laserSfx;
+    [SerializeField] private float _laserSfxVolume = 0.25f;
+    // TODO: Re-assess if necessary because other objects already play the sound effect on death
+    [SerializeField] private AudioClip _explosionSfx;
+    [SerializeField] private float _explosionSfxVolume = 0.3f;
 
     // TODO: Move to a GameManager script to handle different events like player death or game over, etc
     // Player Events
@@ -127,7 +133,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
             }
 
             // Play SFX for laser
-            _audioManager.PlaySoundEffect(_laserSfx);
+            _audioManager.PlaySoundEffect(_laserSfx, _laserSfxVolume);
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);
@@ -191,6 +197,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
                 ResolvePlayerDeath();
             } else {
                 DisplayEngineFire();
+                _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
             }
         } catch (Exception e) { 
             // TODO: Display error message on screen
@@ -215,6 +222,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     private void ResolvePlayerDeath() { 
         Destroy(this.gameObject);
+        _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
         OnPlayerDeath?.Invoke();
 
         _uiManager.DisplayGameOverText(true);
