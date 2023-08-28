@@ -3,6 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AudioManager : MonoBehaviour {
-    public AudioSource backgroundMusicSource;
-    public AudioSource sfxSource;
+    [SerializeField] private AudioSource backgroundMusicSource;
+    [SerializeField] private AudioSource sfxSource;
+
+    public void PlaySoundEffect(AudioClip audioClip) { 
+        sfxSource.clip = audioClip;
+        sfxSource.Play();
+    }
 }

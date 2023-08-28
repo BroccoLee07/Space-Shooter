@@ -127,8 +127,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
             }
 
             // Play SFX for laser
-            _audioManager.sfxSource.clip = _laserSfx;
-            _audioManager.sfxSource.Play();
+            _audioManager.PlaySoundEffect(_laserSfx);
         } catch (Exception e) { 
             // TODO: Display error message on screen
             Debug.Log(e.Message);
