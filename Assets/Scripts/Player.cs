@@ -58,6 +58,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     [SerializeField] private AudioClip _laserSfx;
     [SerializeField] private float _laserSfxVolume = 0.25f;
     // TODO: Re-assess if necessary because other objects already play the sound effect on death
+    // TODO: Fix issue where laser or explosion sound gets cut off because either the laser is shot right after explosion or vice versa
     [SerializeField] private AudioClip _explosionSfx;
     [SerializeField] private float _explosionSfxVolume = 0.3f;
 
