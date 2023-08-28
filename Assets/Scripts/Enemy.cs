@@ -23,14 +23,6 @@ public class Enemy : MonoBehaviour {
         // TODO: Get playerDTO instead of finding a gameobject with the certain script component
         _player = GameObject.Find("Player").GetComponent<Player>();
         _enemyExplodeAnimLength = _enemyExplodeAnim.length;
-        // Layer for explode anim is 0
-        // _enemyExplodeAnimLength = _enemyAnimator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
-        // Debug.Log($"enemy anim clip info: {_enemyAnimator.GetCurrentAnimatorClipInfo(0).Length}");
-        // for(int i = 0; i < _enemyAnimator.animationClips.Length; i++) {                //For all animations
-        //     if(_enemyAnimator.animationClips[i].name == "AnimationName") {           //If it has the same name as your clip
-        //         time = _enemyAnimator.animationClips[i].length;
-        //     }
-        // }
     }
     void Update() {
         Travel();
@@ -55,9 +47,12 @@ public class Enemy : MonoBehaviour {
                 }
                 // Disable script to avoid any triggers when player gets hit and the enemy is already dead
                 // GetComponent<Enemy>().enabled = false;
+                // Disable collider to avoid any further triggers
+                GetComponent<Collider2D>().enabled = false;
 
                 // Disable enemy movement since it is already dead and avoid colliding with the player
                 // If player collides with the explosion, they can still lose HP
+                // TODO: Try slowly reducing speed instead of suddenly pausing? Something with just stopping there and exploding looks off
                 _speed = 0;
 
                 // Trigger animation for enemy death
@@ -67,7 +62,9 @@ public class Enemy : MonoBehaviour {
             } else if (other.tag == "Laser") {
                 if (_player != null) { 
                     _player.UpdateScore(_points);
-                }                
+                }
+                // Disable collider to avoid any further triggers
+                GetComponent<Collider2D>().enabled = false;              
                 Destroy(other.gameObject);
                 // Disable script to avoid any triggers when player gets hit and the enemy is already dead
                 // GetComponent<Enemy>().enabled = false;
