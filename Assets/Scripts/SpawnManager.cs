@@ -69,9 +69,6 @@ public class SpawnManager : MonoBehaviour {
 
         SubscribeToEvents();
 
-        // TODO: Find another way to make sure this is set because right now, it's a race timing issue with all the start methods
-        // _asteroid.SetBaseRotateSpeed(_asteroid.GetBaseRotateSpeed());
-
         StartCoroutine(SpawnAsteroidCoroutine());
         StartCoroutine(SpawnEnemyCoroutine());
         StartCoroutine(SpawnPowerupCoroutine());
