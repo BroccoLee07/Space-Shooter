@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour {
 
+    [Tooltip("Delay (seconds) before spawn coroutines are started")]
+    [SerializeField] private float _spawnStartDelay = 1f;
+
     [Header("Asteroid")]
     [SerializeField] private GameObject _asteroidPrefab;
     [SerializeField] private GameObject _asteroidContainer;
@@ -65,7 +68,9 @@ public class SpawnManager : MonoBehaviour {
         SubscribeToEvents();
     }
 
-    public void StartSpawning() { 
+    public IEnumerator StartSpawning() {
+        yield return new WaitForSeconds(_spawnStartDelay);
+
         _isSpawningAsteroids = true;
         _isSpawningEnemies = true;
         _isSpawningPowerups = true;

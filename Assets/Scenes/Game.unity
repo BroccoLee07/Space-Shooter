@@ -1968,6 +1968,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e482459b9b2b0f4e971a56beb04ea40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnStartDelay: 1
   _asteroidPrefab: {fileID: 3109544979489240567, guid: 0218d642ef5e85e4996f33628c6ba205, type: 3}
   _asteroidContainer: {fileID: 2094560131}
   _enemyPrefab: {fileID: 1196304440749202734, guid: 31efaf4239723fe4b9582c2c285b4e24, type: 3}

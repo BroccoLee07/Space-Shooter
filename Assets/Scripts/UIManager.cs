@@ -17,6 +17,18 @@ public class UIManager : MonoBehaviour {
     [SerializeField] private float _gameOverFlickerIntervalTime = 0.5f;
     [SerializeField] private TMP_Text _restartText;
 
+    private bool _shouldGameStartTextFlicker = false;
+    private bool _shouldGameOverTextFlicker = false;
+    void Start() {
+        InitializeUI();
+    }
+
+    private void InitializeUI() { 
+        _gameStartText.enabled = false;
+        _gameOverText.enabled = false;
+        _restartText.enabled = false;
+    }
+
     public void SetScoreNumberText(int newScore) {
         _scoreNumberText.SetText(newScore.ToString());
     }
@@ -26,44 +38,47 @@ public class UIManager : MonoBehaviour {
     }
 
     public void DisplayGameStartText(bool isVisible) {
-        Debug.Log($"Game start text should be displayed? {isVisible}");
-        _gameStartText.enabled = isVisible;
-        if (isVisible) { 
+        _shouldGameStartTextFlicker = isVisible; 
+        if (isVisible) {
             StartCoroutine(FlickerGameStartTextCoroutine());
-        // } else {
-        //     StopCoroutine(FlickerGameStartTextCoroutine());
+        } else {
+            StopCoroutine(FlickerGameStartTextCoroutine());            
         }
     }
 
     public void DisplayGameOverText(bool isVisible) {
-        _gameOverText.enabled = isVisible;
-        _restartText.enabled = isVisible;
-        if (isVisible) { 
+        _shouldGameOverTextFlicker = isVisible;
+        if (isVisible) {
             StartCoroutine(FlickerGameOverTextCoroutine());
-        // } else {
-        //     StopCoroutine(FlickerGameOverTextCoroutine());
+        } else {
+            StopCoroutine(FlickerGameOverTextCoroutine());
         }
     }
 
     public IEnumerator FlickerGameStartTextCoroutine() {
-        while (true) { 
+        while (_shouldGameStartTextFlicker) {
             yield return new WaitForSeconds(_gameStartFlickerIntervalTime);
             if (_gameStartText.IsActive()) { 
                 _gameStartText.enabled = false;
             } else {
                 _gameStartText.enabled = true;
             }            
-        }        
+        }
+
+        _gameStartText.enabled = _shouldGameStartTextFlicker;
     }
 
     public IEnumerator FlickerGameOverTextCoroutine() {
-        while (true) { 
+        while (_shouldGameOverTextFlicker) { 
             yield return new WaitForSeconds(_gameOverFlickerIntervalTime);
             if (_gameOverText.IsActive()) { 
                 _gameOverText.enabled = false;
             } else {
                 _gameOverText.enabled = true;
             }            
-        }        
+        }
+
+        _gameOverText.enabled = _shouldGameOverTextFlicker;
+        _restartText.enabled = _shouldGameOverTextFlicker;        
     }
 }

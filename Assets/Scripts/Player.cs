@@ -97,7 +97,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
     private void StartGame() {
         _gameManager.SetGameStart(true);
         _uiManager.DisplayGameStartText(false);
-        _spawnManager.StartSpawning();
+        StartCoroutine(_spawnManager.StartSpawning());
     }
 
     private void FireLaser() {
