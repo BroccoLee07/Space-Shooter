@@ -30,8 +30,9 @@ public class Enemy : MonoBehaviour {
         _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
 
         _enemyExplodeAnimLength = _enemyExplodeAnim.length;
+        // TODO: Add feature where enemy shoots every 2-3 seconds from spawning
     }
-    void Update() {
+    void Update() {        
         Travel();
         Cleanup();
     }
