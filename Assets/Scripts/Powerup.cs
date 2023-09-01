@@ -12,10 +12,15 @@ public class Powerup : MonoBehaviour {
     [Tooltip("Boundaries for spawning and destroying powerup")]
     [SerializeField] private Boundary _movementBoundary;
     [SerializeField] private PowerupType _powerupType;
+    [SerializeField] private AudioClip _powerupSfx;
+    [SerializeField] private float _powerupSfxVolume = 0.35f;
+
+    private AudioManager _audioManager;
 
     private GameManager _gameManager;
     void Start() { 
         _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _audioManager = GameObject.Find("AudioManager").GetComponent<AudioManager>();
     }
     public void Update() {
         Travel();
@@ -49,6 +54,7 @@ public class Powerup : MonoBehaviour {
     private void ResolveCollision(Collider2D other) {
         try {
             if (other.tag == "Player") {
+                _audioManager.PlaySoundEffect(_powerupSfx, _powerupSfxVolume);
                 // Collect powerup and enable collected powerup for the player
                 other.GetComponent<Player>().EnablePowerup(_powerupType);
                 Destroy(this.gameObject);

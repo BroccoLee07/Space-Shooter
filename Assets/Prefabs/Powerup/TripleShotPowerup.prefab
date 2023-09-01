@@ -144,6 +144,8 @@ MonoBehaviour:
     minY: -5
     maxY: 9
   _powerupType: 0
+  _powerupSfx: {fileID: 8300000, guid: 5ee343246919d2b4bba63ae629e95494, type: 3}
+  _powerupSfxVolume: 0.35
 --- !u!95 &1827303970
 Animator:
   serializedVersion: 5
