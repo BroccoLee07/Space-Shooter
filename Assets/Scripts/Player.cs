@@ -57,10 +57,6 @@ public class Player : MonoBehaviour, IPlayerEvents {
     // TODO: Move this under laser script?
     [SerializeField] private AudioClip _laserSfx;
     [SerializeField] private float _laserSfxVolume = 0.25f;
-    // TODO: Re-assess if necessary because other objects already play the sound effect on death
-    // TODO: Fix issue where laser or explosion sound gets cut off because either the laser is shot right after explosion or vice versa
-    [SerializeField] private AudioClip _explosionSfx;
-    [SerializeField] private float _explosionSfxVolume = 0.3f;
 
     // TODO: Move to a GameManager script to handle different events like player death or game over, etc
     // Player Events
@@ -198,7 +194,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
                 ResolvePlayerDeath();
             } else {
                 DisplayEngineFire();
-                _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
+                // _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
             }
         } catch (Exception e) { 
             // TODO: Display error message on screen
@@ -223,7 +219,7 @@ public class Player : MonoBehaviour, IPlayerEvents {
 
     private void ResolvePlayerDeath() { 
         Destroy(this.gameObject);
-        _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
+        // _audioManager.PlaySoundEffect(_explosionSfx, _explosionSfxVolume);
         OnPlayerDeath?.Invoke();
 
         _uiManager.DisplayGameOverText(true);

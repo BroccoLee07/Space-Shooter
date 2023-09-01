@@ -12,7 +12,7 @@ public class Asteroid : MonoBehaviour {
     [Tooltip("Additional time to wait before the asteroid is destroyed. Negative value decreases wait time")]
     [SerializeField] private float _asteroidWaitTimeOffset;
     [SerializeField] private AudioClip _explosionSfx;
-    [SerializeField] private float _explosionSfxVolume = 0.15f;
+    [SerializeField] private float _explosionSfxVolume = 0.3f;
     
     // TODO: Create PlayerDTO to replace private instances such as this
     // TODO: Define values of DTOs required in the scene in a central scene manager
@@ -60,8 +60,10 @@ public class Asteroid : MonoBehaviour {
             Destroy(other.gameObject);
 
             ExplodeAsteroid();
-        } else if (other.tag == "Enemy") { 
+        } else if (other.tag == "Enemy") {
+            _explosionSfxVolume /= 2;
             ExplodeAsteroid();
+            _explosionSfxVolume *= 2;
         } else if (other.tag == "Player") {
             // TODO: Get player script component and make player take damage
             Player player = other.GetComponent<Player>();

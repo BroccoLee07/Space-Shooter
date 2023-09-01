@@ -147,3 +147,4 @@ MonoBehaviour:
   _explosionPrefab: {fileID: 4525032750546636156, guid: 0e27b05d21be13b4fba56a9e13c4fe89, type: 3}
   _asteroidWaitTimeOffset: 0.25
   _explosionSfx: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _explosionSfxVolume: 0.2

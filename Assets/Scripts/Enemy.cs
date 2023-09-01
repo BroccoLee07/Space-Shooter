@@ -68,7 +68,9 @@ public class Enemy : MonoBehaviour {
 
                 ExplodeEnemy();               
             } else if(other.tag == "Asteroid") {
+                _explosionSfxVolume /= 2;
                 ExplodeEnemy();
+                _explosionSfxVolume *= 2;
             }
         } catch (Exception e) {
             // TODO: Display error message on screen

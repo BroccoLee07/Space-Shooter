@@ -158,6 +158,7 @@ MonoBehaviour:
   _enemyExplodeAnim: {fileID: 7400000, guid: a3c90acfe43a24841bfcc8d3b9cb3ea7, type: 2}
   _enemyDestroyWaitOffset: 0
   _explosionSfx: {fileID: 8300000, guid: a885c043fab7e46438bba03ba9dab6bc, type: 3}
+  _explosionSfxVolume: 0.3
 --- !u!95 &7314135398765597243
 Animator:
   serializedVersion: 5

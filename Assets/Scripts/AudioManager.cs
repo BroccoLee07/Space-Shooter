@@ -6,9 +6,9 @@ public class AudioManager : MonoBehaviour {
     [SerializeField] private AudioSource backgroundMusicSource;
     [SerializeField] private AudioSource sfxSource;
 
-    public void PlaySoundEffect(AudioClip audioClip, float volume = 0.25f) { 
-        sfxSource.clip = audioClip;
-        sfxSource.volume = volume;
-        sfxSource.Play();
+    // TODO: For sound effects, create audio source for each necessary object (asteroid, enemy, player, laser) and
+    // TODO: handle playing sound effect there 
+    public void PlaySoundEffect(AudioClip audioClip, float volume = 0.25f) {
+        sfxSource.PlayOneShot(audioClip, volume);
     }
 }
